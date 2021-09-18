@@ -156,7 +156,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/09/18/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/09/18/Accessing-a-Shadowsocks-with-V2Ray-Plugin-Server-from-a-Linux-Client/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -169,7 +169,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/18/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+          <a href="/2021/09/18/Accessing-a-Shadowsocks-with-V2Ray-Plugin-Server-from-a-Linux-Client/" class="post-title-link" itemprop="url">Accessing a Shadowsocks with V2Ray Plugin Server from a Linux Client</a>
         </h2>
 
         <div class="post-meta-container">
@@ -179,8 +179,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
+      
 
-      <time title="Created: 2021-09-18 10:15:01" itemprop="dateCreated datePublished" datetime="2021-09-18T10:15:01-07:00">2021-09-18</time>
+      <time title="Created: 2021-09-18 10:43:09 / Modified: 10:50:16" itemprop="dateCreated datePublished" datetime="2021-09-18T10:43:09-07:00">2021-09-18</time>
     </span>
 
   
@@ -193,19 +194,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+          <p>Download shadowsocks-rust for Linux 64-bit from <a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks-rust/releases">GitHub</a>. Extract the contents of the archive.</p>
+<p>Download the v2ray-plugin for Linux 64-bit from <a target="_blank" rel="noopener" href="https://github.com/shadowsocks/v2ray-plugin/releases">GitHub</a>. Copy the binary into the same folder as the extracted shadowsocks binaries.</p>
+<p>Create a <code>config.json</code> file like this:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;server&quot;:&quot;your.host.name&quot;,</span><br><span class="line">    &quot;server_port&quot;:443,</span><br><span class="line">    &quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">    &quot;local_port&quot;: 1080,</span><br><span class="line">    &quot;password&quot;:&quot;yourshadowsocksserverpassword&quot;,</span><br><span class="line">    &quot;timeout&quot;:300,</span><br><span class="line">    &quot;method&quot;:&quot;chacha20-ietf-poly1305&quot;,</span><br><span class="line">    &quot;plugin&quot;:&quot;./v2ray-plugin_linux_amd64&quot;,</span><br><span class="line">    &quot;plugin_opts&quot;:&quot;path=/yourpath;host=your.host.name;tls&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>Start shadowsocks running:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sslocal -c config.json</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>Configure Firefox network settings to use the SOCKS5 proxy server that is now listening on 127.0.0.1 port 1080. Also set Firefox to proxy DNS queries over the SOCKS5 server.</p>
 
       
     </div>
