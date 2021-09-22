@@ -187,7 +187,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-09-22 03:51:00" itemprop="dateModified" datetime="2021-09-22T03:51:00-07:00">2021-09-22</time>
+        <time title="Modified: 2021-09-22 05:38:58" itemprop="dateModified" datetime="2021-09-22T05:38:58-07:00">2021-09-22</time>
       </span>
 
   
@@ -214,7 +214,9 @@
 <li>Shadowsocks install script for the server <a target="_blank" rel="noopener" href="https://github.com/teddysun/shadowsocks_install/tree/master">https://github.com/teddysun/shadowsocks_install/tree/master</a></li>
 <li>Shadowsocks client for Windows <a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks-windows">https://github.com/shadowsocks/shadowsocks-windows</a></li>
 </ul>
-<h2 id="Outline-Manager"><a href="#Outline-Manager" class="headerlink" title="Outline Manager"></a>Outline Manager</h2><p>Outline Server Manager will attempt to install Docker on your server. You can also install it yourself. The instructions to install Docker on Ubuntu are given at <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/ubuntu">https://docs.docker.com/engine/install/ubuntu</a>. For Ubuntu 20.04 they are as follows.</p>
+<h2 id="Outline-Manager"><a href="#Outline-Manager" class="headerlink" title="Outline Manager"></a>Outline Manager</h2><h3 id="Prepare-Server"><a href="#Prepare-Server" class="headerlink" title="Prepare Server"></a>Prepare Server</h3><p>Outline Manager runs on your PC but controls your Linux server.</p>
+<p>Before beginning, make sure your server has high-numbered ports open for both TCP and UDP. Typically these are ports in the range 1024 through 65535.</p>
+<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><p>Outline Server Manager will attempt to install Docker on your server. You can also install Docker on the server yourself. The instructions to install Docker on Ubuntu are given at <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/ubuntu">https://docs.docker.com/engine/install/ubuntu</a>. For Ubuntu 20.04 they are as follows.</p>
 <p>SSH into your server as <code>root</code>.</p>
 <p><img src="/images/outline-1.png" alt="Windows PowerShell SSH"></p>
 <p>Get the prerequisites:</p>
@@ -236,7 +238,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hello from Docker!</span><br><span class="line">This message shows that your installation appears to be working correctly.</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/outline-2.png" alt="Docker hello-world"></p>
-<p>Now download to your PC the Outline Manager installer executable from the official website at <a target="_blank" rel="noopener" href="https://getoutline.org/">https://getoutline.org</a>.</p>
+<h3 id="Configure-Server"><a href="#Configure-Server" class="headerlink" title="Configure Server"></a>Configure Server</h3><p>Now download to your PC the Outline Manager installer executable from the official website at <a target="_blank" rel="noopener" href="https://getoutline.org/">https://getoutline.org</a>.</p>
 <p>Launch Outline Manager. Click OK to say that you agree to the Outline Terms of Service.</p>
 <p>You are presented with a panel with four choices:</p>
 <ul>
@@ -269,7 +271,7 @@
 <h3 id="Problems-with-TAP-Adapter-Not-Installing"><a href="#Problems-with-TAP-Adapter-Not-Installing" class="headerlink" title="Problems with TAP Adapter Not Installing"></a>Problems with TAP Adapter Not Installing</h3><p>There are sometimes problems on Windows with the TAP adapter not installing. This issue is documented at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/761">https://github.com/Jigsaw-Code/outline-client/issues/761</a>.</p>
 <p>The general principle is to uninstall the TAP-Windows Adapter V9 in the Device Manager in the Network adapter category. Also uninstall the Outline Client program in Control Panel. Then attempt to rerun the Outline Client installer.</p>
 <h3 id="Unexpected-Error"><a href="#Unexpected-Error" class="headerlink" title="Unexpected Error"></a>Unexpected Error</h3><p>Outline Client sometimes creates problems marked “Unexpected error.”</p>
-<p>On Windows, one possible cause is a missing Visual C++ Redistributable. This issue is documented at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/782">https://github.com/Jigsaw-Code/outline-client/issues/782</a>. A user in that thread responds that the error was caused by missing DLLs. Running <code>vc_redist.x64.exe</code> and <code>vc_redist.x86.exe</code> (even on a 64-bit machine) solved the problem. You can find the DLLs from <a target="_blank" rel="noopener" href="https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads">https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads</a>.</p>
+<p>On Windows, one possible cause is a missing Visual C++ Redistributable. This issue is documented at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/782">https://github.com/Jigsaw-Code/outline-client/issues/782</a>. A user in that thread responds that the error was caused by missing DLLs. Running <code>vc_redist.x64.exe</code> and <code>vc_redist.x86.exe</code> solved the problem. The 32-bit version, <code>vc_redist.x86.exe</code>, is needed even on a 64-bit PC. You can find the DLLs from <a target="_blank" rel="noopener" href="https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads">https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads</a>.</p>
 <p>Another user reports at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/994">https://github.com/Jigsaw-Code/outline-client/issues/994</a> that you can sometimes get more information by running <code>c:\Program Files(x86)\Outline\outline.exe</code> from the command line.</p>
 <p>You can also look in Windows Event Viewer (search for it in the Windows search box, or run <code>eventvwr</code>).</p>
 <p>It may also be helpful to run Wireshark to see what is happening. Wireshark may be installed from <a target="_blank" rel="noopener" href="https://www.wireshark.org/">https://www.wireshark.org</a>.</p>
