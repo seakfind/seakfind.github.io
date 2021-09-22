@@ -187,7 +187,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-09-22 03:29:18" itemprop="dateModified" datetime="2021-09-22T03:29:18-07:00">2021-09-22</time>
+        <time title="Modified: 2021-09-22 03:51:00" itemprop="dateModified" datetime="2021-09-22T03:51:00-07:00">2021-09-22</time>
       </span>
 
   
@@ -269,7 +269,7 @@
 <h3 id="Problems-with-TAP-Adapter-Not-Installing"><a href="#Problems-with-TAP-Adapter-Not-Installing" class="headerlink" title="Problems with TAP Adapter Not Installing"></a>Problems with TAP Adapter Not Installing</h3><p>There are sometimes problems on Windows with the TAP adapter not installing. This issue is documented at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/761">https://github.com/Jigsaw-Code/outline-client/issues/761</a>.</p>
 <p>The general principle is to uninstall the TAP-Windows Adapter V9 in the Device Manager in the Network adapter category. Also uninstall the Outline Client program in Control Panel. Then attempt to rerun the Outline Client installer.</p>
 <h3 id="Unexpected-Error"><a href="#Unexpected-Error" class="headerlink" title="Unexpected Error"></a>Unexpected Error</h3><p>Outline Client sometimes creates problems marked “Unexpected error.”</p>
-<p>On Windows, one possible cause is a missing Visual C++ Redistributable. This issue is documented at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/782">https://github.com/Jigsaw-Code/outline-client/issues/782</a>. A user in that thread responds that the error is caused by missing DLLs. Running <code>vc_redist.x64.exe</code> (and <code>vc_redist.x86.exe</code> solved the problem for that user. You can find them from <a target="_blank" rel="noopener" href="https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads">https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads</a>.</p>
+<p>On Windows, one possible cause is a missing Visual C++ Redistributable. This issue is documented at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/782">https://github.com/Jigsaw-Code/outline-client/issues/782</a>. A user in that thread responds that the error was caused by missing DLLs. Running <code>vc_redist.x64.exe</code> and <code>vc_redist.x86.exe</code> (even on a 64-bit machine) solved the problem. You can find the DLLs from <a target="_blank" rel="noopener" href="https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads">https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads</a>.</p>
 <p>Another user reports at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/994">https://github.com/Jigsaw-Code/outline-client/issues/994</a> that you can sometimes get more information by running <code>c:\Program Files(x86)\Outline\outline.exe</code> from the command line.</p>
 <p>You can also look in Windows Event Viewer (search for it in the Windows search box, or run <code>eventvwr</code>).</p>
 <p>It may also be helpful to run Wireshark to see what is happening. Wireshark may be installed from <a target="_blank" rel="noopener" href="https://www.wireshark.org/">https://www.wireshark.org</a>.</p>
