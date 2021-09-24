@@ -20,23 +20,27 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"seakfind.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="seakfind">
-<meta property="og:url" content="https://seakfind.github.io/index.html">
+<meta name="description" content="0. IntroductionShadowsocks is one of the easiest tools you can use for censorship circumvention. In this tutorial, you’ll learn how to set up your own Shadowsocks server. You’ll also see how to connec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Build Your Own Shadowsocks Server">
+<meta property="og:url" content="https://seakfind.github.io/2021/09/23/Build-Your-Own-Shadowsocks-Server/index.html">
 <meta property="og:site_name" content="seakfind">
+<meta property="og:description" content="0. IntroductionShadowsocks is one of the easiest tools you can use for censorship circumvention. In this tutorial, you’ll learn how to set up your own Shadowsocks server. You’ll also see how to connec">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-23T23:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-24T11:48:54.757Z">
 <meta property="article:author" content="seakfind">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://seakfind.github.io/">
+<link rel="canonical" href="https://seakfind.github.io/2021/09/23/Build-Your-Own-Shadowsocks-Server/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://seakfind.github.io/2021/09/23/Build-Your-Own-Shadowsocks-Server/","path":"2021/09/23/Build-Your-Own-Shadowsocks-Server/","title":"Build Your Own Shadowsocks Server"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>seakfind</title>
+<title>Build Your Own Shadowsocks Server | seakfind</title>
   
 
 
@@ -90,7 +94,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -103,6 +107,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-Introduction"><span class="nav-number">1.</span> <span class="nav-text">0. Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Research-VPS-Providers"><span class="nav-number">2.</span> <span class="nav-text">1. Research VPS Providers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Avoid-Blocked-IP-Addresses"><span class="nav-number">3.</span> <span class="nav-text">2. Avoid Blocked IP Addresses</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Choose-VPS-Size-and-Linux-Distribution"><span class="nav-number">4.</span> <span class="nav-text">3. Choose VPS Size and Linux Distribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Choose-VPS-Provider-and-Package"><span class="nav-number">5.</span> <span class="nav-text">4. Choose VPS Provider and Package</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Create-VPS"><span class="nav-number">6.</span> <span class="nav-text">5. Create VPS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Install-Terminal-Emulator"><span class="nav-number">7.</span> <span class="nav-text">6. Install Terminal Emulator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-SSH-into-Server"><span class="nav-number">8.</span> <span class="nav-text">7. SSH into Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Switch-User-to-Root"><span class="nav-number">9.</span> <span class="nav-text">8. Switch User to Root</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Update-Server"><span class="nav-number">10.</span> <span class="nav-text">9. Update Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Protect-Port-22"><span class="nav-number">11.</span> <span class="nav-text">10. Protect Port 22</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Open-Firewall-for-Shadowsocks"><span class="nav-number">12.</span> <span class="nav-text">11. Open Firewall for Shadowsocks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Choose-a-Password-for-Shadowsocks"><span class="nav-number">13.</span> <span class="nav-text">12. Choose a Password for Shadowsocks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-Download-Script"><span class="nav-number">14.</span> <span class="nav-text">13. Download Script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-Run-Script"><span class="nav-number">15.</span> <span class="nav-text">14. Run Script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-Client"><span class="nav-number">16.</span> <span class="nav-text">15. Client</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-Test"><span class="nav-number">17.</span> <span class="nav-text">16. Test</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-Troubleshooting-and-Maintenance"><span class="nav-number">18.</span> <span class="nav-text">17. Troubleshooting and Maintenance</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -146,16 +151,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/09/23/Build-Your-Own-Shadowsocks-Server/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -168,9 +174,9 @@
       <meta itemprop="name" content="seakfind">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/23/Build-Your-Own-Shadowsocks-Server/" class="post-title-link" itemprop="url">Build Your Own Shadowsocks Server</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Build Your Own Shadowsocks Server
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -200,7 +206,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="0-Introduction"><a href="#0-Introduction" class="headerlink" title="0. Introduction"></a>0. Introduction</h2><p>Shadowsocks is one of the easiest tools you can use for censorship circumvention. In this tutorial, you’ll learn how to set up your own Shadowsocks server. You’ll also see how to connect to your server from a Windows client.</p>
+        <h2 id="0-Introduction"><a href="#0-Introduction" class="headerlink" title="0. Introduction"></a>0. Introduction</h2><p>Shadowsocks is one of the easiest tools you can use for censorship circumvention. In this tutorial, you’ll learn how to set up your own Shadowsocks server. You’ll also see how to connect to your server from a Windows client.</p>
 <p>For ease and convenience, we’ll use a prewritten script to carry out the installation.</p>
 <p>The version of Shadowsocks we install here is Shadowsocks-libev. This version is characterized by small memory footprint and is written in the C programming language for low CPU consumption. It is so efficient you can even run it on a router.</p>
 <p>The tutorial demonstrates the set-up of a single-user Shadowsocks server. Shadowsocks-libev does not support multiple users each on their own port. If you need multiple users and ports, please install the Python, Go, or Rust version of Shadowsocks. The only way you can support multiple ports with Shadowsocks-libev is to create multiple instances of Shadowsocks.</p>
@@ -319,7 +325,6 @@
 <p>If you ever need to uninstall, log in to the server as the root user and run the following command:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./shadowsocks-libev-debian.sh uninstall</span><br></pre></td></tr></table></figure>
 
-      
     </div>
 
     
@@ -327,243 +332,22 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/19/Outline-of-Outline/" rel="prev" title="Outline of Outline">
+                  <i class="fa fa-chevron-left"></i> Outline of Outline
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/09/19/Outline-of-Outline/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="seakfind">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="seakfind">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/19/Outline-of-Outline/" class="post-title-link" itemprop="url">Outline of Outline</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-09-19 15:00:00" itemprop="dateCreated datePublished" datetime="2021-09-19T15:00:00-07:00">2021-09-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-09-23 12:01:29" itemprop="dateModified" datetime="2021-09-23T12:01:29-07:00">2021-09-23</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="What-is-Outline-VPN"><a href="#What-is-Outline-VPN" class="headerlink" title="What is Outline VPN?"></a>What is Outline VPN?</h2><p>Outline is a product of Google Jigsaw, a unit of Google that seeks to harness technology to promote an open society. Before being named Jigsaw, the unit was known as Google Ideas. It was founded in 2010 under Jared Cohen, formerly of the U.S. State Department.</p>
-<p>Outline consists of a server manager and a client. Outline Manager will handle any server provider, but it has special features to automate the process on DigitalOcean, Amazon Lightsail, and Google Cloud. Builds of the Server Manager are available for Windows, Linux, and macOS. The Outline Client is available for Android, Windows, Chrome, iOS, macOS, and Linux.</p>
-<p>The official website for Outline VPN is Get Outline at <a target="_blank" rel="noopener" href="https://getoutline.org/">https://getoutline.org</a>.</p>
-<h2 id="VPN-vs-Proxy-Server"><a href="#VPN-vs-Proxy-Server" class="headerlink" title="VPN vs. Proxy Server"></a>VPN vs. Proxy Server</h2><p>A virtual private network or VPN typically routes all application and all protocols through an encrypted tunnel to a remote server.</p>
-<p>A proxy server typically applies only to your browser or other applications specifically configured to use a proxy server. </p>
-<p>Outline is a VPN in that it creates a new software interface and routes all traffic over it. However, under the hood, Outline implements Shadowsocks, which if used by itself is a proxy server protected by encryption.</p>
-<h2 id="Shadowsocks-vs-Outline"><a href="#Shadowsocks-vs-Outline" class="headerlink" title="Shadowsocks vs. Outline"></a>Shadowsocks vs. Outline</h2><p>Shadowsocks is the basis for Outline. It creates an encrypted tunnel between a Shadowsocks client and a Shadowsocks proxy server. Shadowsocks was created in 2012 by a Chinese programmer named clowwindy.</p>
-<p>Since Outline runs on top of Shadowsocks, it can sometimes be quicker and more reliable simply to install Shadowsocks on your server and client instead of Outline. </p>
-<p>If you do choose to run Shadowsocks itself, you can find best practices for configuration at <a target="_blank" rel="noopener" href="https://gfw.report/blog/ss_tutorial/en">https://gfw.report/blog/ss_tutorial/en</a>.</p>
-<p>Some helpful links for installing Shadowsocks:</p>
-<ul>
-<li>Shadowsocks install script for the server <a target="_blank" rel="noopener" href="https://github.com/teddysun/shadowsocks_install/tree/master">https://github.com/teddysun/shadowsocks_install/tree/master</a></li>
-<li>Shadowsocks client for Windows <a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks-windows">https://github.com/shadowsocks/shadowsocks-windows</a></li>
-</ul>
-<h2 id="Outline-Manager"><a href="#Outline-Manager" class="headerlink" title="Outline Manager"></a>Outline Manager</h2><h3 id="Prepare-Server"><a href="#Prepare-Server" class="headerlink" title="Prepare Server"></a>Prepare Server</h3><p>Outline Manager runs on your PC but controls your Linux server.</p>
-<p>Before beginning, make sure your server has high-numbered ports open for both TCP and UDP. Typically these are ports in the range 1024 through 65535.</p>
-<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><p>Outline Server Manager will attempt to install Docker on your server. You can also install Docker on the server yourself. The instructions to install Docker on Ubuntu are given at <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/ubuntu">https://docs.docker.com/engine/install/ubuntu</a>. For Ubuntu 20.04 they are as follows.</p>
-<p>SSH into your server as <code>root</code>.</p>
-<p><img src="/images/outline-1.png" alt="Windows PowerShell SSH"></p>
-<p>Get the prerequisites:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt update &amp;&amp; apt upgrade</span><br><span class="line"></span><br><span class="line">apt install apt-transport-https ca-certificates curl gnupg lsb-release</span><br></pre></td></tr></table></figure>
-
-<p>Get the Docker signing key:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-
-<p>Add the Docker repository to be signed by the Docker signing key:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot; | tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br></pre></td></tr></table></figure>
-
-<p>Install Docker:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line"></span><br><span class="line">apt install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
-
-<p>Test your Docker install:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
-
-<p>The multiline output should include the lines:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hello from Docker!</span><br><span class="line">This message shows that your installation appears to be working correctly.</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/outline-2.png" alt="Docker hello-world"></p>
-<h3 id="Configure-Server"><a href="#Configure-Server" class="headerlink" title="Configure Server"></a>Configure Server</h3><p>Now download to your PC the Outline Manager installer executable from the official website at <a target="_blank" rel="noopener" href="https://getoutline.org/">https://getoutline.org</a>.</p>
-<p>Launch Outline Manager. Click OK to say that you agree to the Outline Terms of Service.</p>
-<p>You are presented with a panel with four choices:</p>
-<ul>
-<li>DigitalOcean</li>
-<li>Google Cloud Platform</li>
-<li>Amazon Lightsail</li>
-<li>Set up Outline anywhere</li>
-</ul>
-<p><img src="/images/outline-3.png" alt="Outline Manager VPS provider selection"></p>
-<p>The “anywhere” option provides you with a command to run a script on your server:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c &quot;$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)&quot;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/outline-4.png" alt="Outline Server Manager install script"></p>
-<p>At the end of the script, a process named <code>outline-ss-server</code> is listening on randomly generated ports. TCP access is required for the management port, and both TCP and UDP for the client port. The file <code>/opt/outline/persisted-state/outline-ss-server/config.yml</code> contains the parameters for the client(s) in YAML format.</p>
-<p>The output from the script will include lines that look like this:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">To manage your Outline server, please copy the following line (including curly brackets) into Step 2 of the Outline Manager interface:</span><br><span class="line"></span><br><span class="line">&#123;&quot;apiUrl&quot;:&quot;https://XX.XX.XX.XX:YYYYY/4pvXtsIOLe3fiecYOEO6bw&quot;,&quot;certSha256&quot;:&quot;8D43979D44757F9ECE87C80F3E8C8A352964BDA8A3F65ABAB4A6F2C044DF0496&quot;&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/outline-5.png" alt="Outline API URL"></p>
-<p>You must copy and paste the resultant API URL line into the Outline Manager GUI panel.</p>
-<p><img src="/images/outline-6.png" alt="Outline API URL in Server Manager"></p>
-<p>After this, you can generate access keys for yourself and others.</p>
-<p>The keys look like this:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpPWW9QazFxcmtOTDA@XX.XX.XX.XX:ZZZZZ/?outline=1</span><br></pre></td></tr></table></figure>
-
-<h2 id="Outline-Client-for-Windows"><a href="#Outline-Client-for-Windows" class="headerlink" title="Outline Client for Windows"></a>Outline Client for Windows</h2><p>Download the Outline Client from <a target="_blank" rel="noopener" href="https://getoutline.org/">https://getoutline.org</a>. On Windows, this gives you an installer, Outline-Client.exe. Run the installer.</p>
-<p>Once the Outline Client is running, paste the Outline access key for the server into the Outline Client.</p>
-<p>The Outline Client creates a TAP-Windows Adapter V9 named <code>outline-tap0</code>. You can view this in the Network Connections page of the Network and Sharing Center in the Control Panel. It also appears in the Device Manager in the Network adapter category.</p>
-<p><img src="/images/outline-7.png" alt="Outline interface in Windows Device Manager"></p>
-<p>Connect from the client to the server.</p>
-<h3 id="Problems-with-TAP-Adapter-Not-Installing"><a href="#Problems-with-TAP-Adapter-Not-Installing" class="headerlink" title="Problems with TAP Adapter Not Installing"></a>Problems with TAP Adapter Not Installing</h3><p>There are sometimes problems on Windows with the TAP adapter not installing. This issue is documented at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/761">https://github.com/Jigsaw-Code/outline-client/issues/761</a>.</p>
-<p>The general principle is to uninstall the TAP-Windows Adapter V9 in the Device Manager in the Network adapter category. Also uninstall the Outline Client program in Control Panel. Then attempt to rerun the Outline Client installer.</p>
-<h3 id="Unexpected-Error"><a href="#Unexpected-Error" class="headerlink" title="Unexpected Error"></a>Unexpected Error</h3><p>Outline Client sometimes creates problems marked “Unexpected error.”</p>
-<p>On Windows, one possible cause is a missing Visual C++ Redistributable. This issue is documented at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/782">https://github.com/Jigsaw-Code/outline-client/issues/782</a>. A user in that thread responds that the error was caused by missing DLLs. Running <code>vc_redist.x64.exe</code> and <code>vc_redist.x86.exe</code> solved the problem. The 32-bit version, <code>vc_redist.x86.exe</code>, is needed even on a 64-bit PC. You can find the DLLs from <a target="_blank" rel="noopener" href="https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads">https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads</a>.</p>
-<p>Another user reports at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues/994">https://github.com/Jigsaw-Code/outline-client/issues/994</a> that you can sometimes get more information by running <code>c:\Program Files(x86)\Outline\outline.exe</code> from the command line.</p>
-<p>You can also look in Windows Event Viewer (search for it in the Windows search box, or run <code>eventvwr</code>).</p>
-<p>It may also be helpful to run Wireshark to see what is happening. Wireshark may be installed from <a target="_blank" rel="noopener" href="https://www.wireshark.org/">https://www.wireshark.org</a>.</p>
-<p><img src="/images/outline-8.png" alt="Preparing to capture packets to and from a specific host in Wireshark"></p>
-<p>On the server side, you can run:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs shadowbox</span><br></pre></td></tr></table></figure>
-
-<p>If you cannot resolve the issue yourself, you can report it at <a target="_blank" rel="noopener" href="https://github.com/Jigsaw-Code/outline-client/issues">https://github.com/Jigsaw-Code/outline-client/issues</a>.</p>
-<p>Consider also using Shadowsocks directly as a workaround.</p>
-<h2 id="Outline-Client-for-Linux"><a href="#Outline-Client-for-Linux" class="headerlink" title="Outline Client for Linux"></a>Outline Client for Linux</h2><p>Download the Outline Client from <a target="_blank" rel="noopener" href="https://getoutline.org/">https://getoutline.org</a>. On Linux, the Outline Client is supplied as an AppImage file.</p>
-<p>Make the AppImage executable:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/Downloads</span><br><span class="line"></span><br><span class="line">chmod +x Outline-Client.AppImage</span><br></pre></td></tr></table></figure>
-
-<p>Then just run the AppImage directly:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./Outline-Client.AppImage</span><br></pre></td></tr></table></figure>
-
-<p>Outline Client creates an interface <code>outline-tun0</code>. It then changes the routing table so that this interface becomes the default route. This is what allows Outline to function as a VPN.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/09/18/Accessing-a-Shadowsocks-with-V2Ray-Plugin-Server-from-a-Linux-Client/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="seakfind">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="seakfind">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/18/Accessing-a-Shadowsocks-with-V2Ray-Plugin-Server-from-a-Linux-Client/" class="post-title-link" itemprop="url">Accessing a Shadowsocks with V2Ray Plugin Server from a Linux Client</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-09-18 10:43:09 / Modified: 14:18:30" itemprop="dateCreated datePublished" datetime="2021-09-18T10:43:09-07:00">2021-09-18</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Download shadowsocks-rust for Linux 64-bit from <a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks-rust/releases">GitHub</a>. Extract the contents of the archive.</p>
-<p>Download the v2ray-plugin for Linux 64-bit from <a target="_blank" rel="noopener" href="https://github.com/shadowsocks/v2ray-plugin/releases">GitHub</a>. Copy the binary into the same folder as the extracted shadowsocks binaries.</p>
-<p>Create a <code>config.json</code> file like this:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;server&quot;:&quot;your.host.name&quot;,</span><br><span class="line">    &quot;server_port&quot;:443,</span><br><span class="line">    &quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">    &quot;local_port&quot;: 1080,</span><br><span class="line">    &quot;password&quot;:&quot;yourshadowsocksserverpassword&quot;,</span><br><span class="line">    &quot;timeout&quot;:300,</span><br><span class="line">    &quot;method&quot;:&quot;chacha20-ietf-poly1305&quot;,</span><br><span class="line">    &quot;plugin&quot;:&quot;./v2ray-plugin_linux_amd64&quot;,</span><br><span class="line">    &quot;plugin_opts&quot;:&quot;path=/yourpath;host=your.host.name;tls&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Start shadowsocks running:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sslocal -c config.json</span><br></pre></td></tr></table></figure>
-
-<p>Configure Firefox network settings to use the SOCKS5 proxy server that is now listening on 127.0.0.1 port 1080. Also set Firefox to proxy DNS queries over the SOCKS5 server.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
 
 
