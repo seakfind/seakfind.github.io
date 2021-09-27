@@ -27,10 +27,20 @@
 <meta property="og:site_name" content="seakfind">
 <meta property="og:description" content="IntroductionShadowsocks is one of the easiest tools you can use for censorship circumvention. In this tutorial, you’ll learn how to set up your own Shadowsocks server. You’ll also see how to connect t">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://seakfind.github.io/images/ss-fail2ban.png">
+<meta property="og:image" content="https://seakfind.github.io/images/ss-chmod.png">
+<meta property="og:image" content="https://seakfind.github.io/images/ss-password.png">
+<meta property="og:image" content="https://seakfind.github.io/images/ss-port.png">
+<meta property="og:image" content="https://seakfind.github.io/images/ss-cipher.png">
+<meta property="og:image" content="https://seakfind.github.io/images/ss-completed.png">
+<meta property="og:image" content="https://seakfind.github.io/images/ss-unzipped.png">
+<meta property="og:image" content="https://seakfind.github.io/images/ss-server.png">
+<meta property="og:image" content="https://seakfind.github.io/images/ss-global.png">
 <meta property="article:published_time" content="2021-09-23T23:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-24T17:46:57.098Z">
+<meta property="article:modified_time" content="2021-09-27T00:26:47.718Z">
 <meta property="article:author" content="seakfind">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://seakfind.github.io/images/ss-fail2ban.png">
 
 
 <link rel="canonical" href="https://seakfind.github.io/2021/09/23/Build-Your-Own-Shadowsocks-Server/">
@@ -193,7 +203,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-09-24 10:46:57" itemprop="dateModified" datetime="2021-09-24T10:46:57-07:00">2021-09-24</time>
+        <time title="Modified: 2021-09-26 17:26:47" itemprop="dateModified" datetime="2021-09-26T17:26:47-07:00">2021-09-26</time>
       </span>
 
   
@@ -225,7 +235,7 @@
 <p>The rest of this tutorial illustrates the Shadowsocks installation process on a 1 GB VPS from Digital Ocean running Debian 10.</p>
 <h2 id="Create-VPS"><a href="#Create-VPS" class="headerlink" title="Create VPS"></a>Create VPS</h2><p>DigitalOcean uses the word “droplet” for what other providers call a “VPS” or “instance.”</p>
 <p>Whatever provider you’re working on, you’ll need to go through the process to create your VPS. Here is the sequence of choices you’ll make to create a “droplet (or VPS) on DigitalOcean. You’ll make similar choices on other VPS providers.</p>
-<ul>
+<ol>
 <li>Select a Linux distribution (Debian 10 in our example)</li>
 <li>Choose a plan (e.g. Basic)</li>
 <li>Select a CPU option (e.g. Regular Intel with SSD)</li>
@@ -238,7 +248,7 @@
 <li>Choose a hostname (e.g. the default, debian-s-1vcpu-1gb-nyc3-01, will do)</li>
 <li>Select a project (e.g. the default)</li>
 <li>Add backups (you can leave this option unchecked unless you need a regular backup of your server)</li>
-</ul>
+</ol>
 <p>Click <strong>Create Droplet</strong>.</p>
 <p>It takes about a minute to create the VPS. Once it’s created, its public IPv4 address is displayed on your dashboard. You’ll need that in a moment.</p>
 <h2 id="Install-Terminal-Emulator"><a href="#Install-Terminal-Emulator" class="headerlink" title="Install Terminal Emulator"></a>Install Terminal Emulator</h2><p>To log in to your server, you’ll need a terminal emulator. On macOS or Linux, your computer already includes a terminal emulator application. On Windows, you have various choices:</p>
@@ -281,8 +291,10 @@
 <p>Now you can install <code>fail2ban</code>:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install fail2ban</span><br></pre></td></tr></table></figure>
 
+<p>Fail2ban creates and manages extra <code>iptables</code> rules to temporarily block IP addresses with too many failed login attempts.</p>
+<p><img src="/images/ss-fail2ban.png" alt="iptables rules managed by fail2ban"></p>
 <h2 id="Open-Firewall-for-Shadowsocks"><a href="#Open-Firewall-for-Shadowsocks" class="headerlink" title="Open Firewall for Shadowsocks"></a>Open Firewall for Shadowsocks</h2><p>You have not yet specified any firewall rules except those that <code>fail2ban</code> created to limit bad login attempts. However, some VPS providers implement a system of security groups outside of the server’s <code>iptables</code> rules.</p>
-<p>The script you run in a few minutes is going to randomly generate a port number between <code>9000</code> and <code>19999</code> for Shadowsocks. If your VPS providers uses security groups, you’ll need to open the security groups for input on ports <code>9000</code> through <code>19999</code>.</p>
+<p>The script you run in a few minutes is going to randomly generate a port number between <code>9000</code> and <code>19999</code> for Shadowsocks. If your VPS providers uses security groups, you’ll need to open the security groups for input on ports <code>9000</code> through <code>19999</code>. Note that, by default, Shadowsocks will listen on both TCP and UDP on its selected port.</p>
 <h2 id="Choose-a-Password-for-Shadowsocks"><a href="#Choose-a-Password-for-Shadowsocks" class="headerlink" title="Choose a Password for Shadowsocks"></a>Choose a Password for Shadowsocks</h2><p>The script is going to suggest a default password of <code>teddysun.com</code>. Obviously this is not the best password to use in the real world. Therefore invent a strong password now. It should be different from the root password you chose in step 5 when you created the VPS. Our example will be <code>socKsecreT2021%d</code>.</p>
 <h2 id="Download-Script"><a href="#Download-Script" class="headerlink" title="Download Script"></a>Download Script</h2><p>Download the script from GitHub by issuing this command in your terminal emulator:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-libev-debian.sh</span><br></pre></td></tr></table></figure>
@@ -290,25 +302,35 @@
 <p>Make the script executable by issuing the command to set the execution bit:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x shadowsocks-libev-debian.sh</span><br></pre></td></tr></table></figure>
 
+<p><img src="/images/ss-chmod.png" alt="wget and chmod on shadowsocks script"></p>
 <h2 id="Run-Script"><a href="#Run-Script" class="headerlink" title="Run Script"></a>Run Script</h2><p>Issue the command:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./shadowsocks-libev-debian.sh</span><br></pre></td></tr></table></figure>
-
-<p>You will be prompted for a server port. You can set it by yourself of you like. If you do not set it, the port number will be randomly generated from <code>9000</code> to <code>19999</code> by default.</p>
 <p>The user password can be set by yourself or, if you do not set it. the default is <code>teddysun.com</code>. We chose <code>socKsecreT2021%d</code> as an example of setting the password yourself.</p>
+<p><img src="/images/ss-password.png" alt="Script prompts for password"></p>
+<p>You will be prompted for a server port. You can set it by yourself of you like. If you do not set it, the port number will be randomly generated from <code>9000</code> to <code>19999</code> by default.</p>
+<p><img src="/images/ss-port.png" alt="Script prompts for port"></p>
 <p>The encryption method can be set by yourself or, if you do not set it, the default is <code>aes-256-gcm</code>.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">aes-256-gcm</span><br><span class="line">aes-192-gcm</span><br><span class="line">aes-128-gcm</span><br><span class="line">aes-256-ctr</span><br><span class="line">aes-192-ctr</span><br><span class="line">aes-128-ctr</span><br><span class="line">aes-256-cfb</span><br><span class="line">aes-192-cfb</span><br><span class="line">aes-128-cfb</span><br><span class="line">camellia-128-cfb</span><br><span class="line">camellia-192-cfb</span><br><span class="line">camellia-256-cfb</span><br><span class="line">chacha20-ietf-poly1305</span><br><span class="line">chacha20-ietf</span><br><span class="line">chacha20</span><br><span class="line">rc4-md5</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">1) aes-256-gcm</span><br><span class="line">2) aes-192-gcm</span><br><span class="line">3) aes-128-gcm</span><br><span class="line">4) aes-256-ctr</span><br><span class="line">5) aes-192-ctr</span><br><span class="line">6) aes-128-ctr</span><br><span class="line">7) aes-256-cfb</span><br><span class="line">8) aes-192-cfb</span><br><span class="line">9) aes-128-cfb</span><br><span class="line">10) camellia-128-cfb</span><br><span class="line">11) camellia-192-cfb</span><br><span class="line">12) camellia-256-cfb</span><br><span class="line">13) xchacha20-ietf-poly1305</span><br><span class="line">14) chacha20-ietf-poly1305</span><br><span class="line">15) chacha20-ietf</span><br><span class="line">16) chacha20</span><br><span class="line">17) salsa20</span><br><span class="line">18) rc4-md5</span><br></pre></td></tr></table></figure>
 
 <p>We recommend you set the encryption method to <code>chacha20-ietf-poly1305</code>. This is a modern, AEAD cipher.</p>
+<p><img src="/images/ss-cipher.png" alt="Script prompts for cipher"></p>
+<p>Finally you are prompted to press any key to start, or <strong>Ctrl</strong>+<strong>c</strong> to cancel.</p>
+<p>Shadowsocks-libev is compiled from source. This will take a few minutes.</p>
 <p>After the installation is complete, the script prompts as follows:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Congratulations, Shadowsocks-libev server install completed!</span><br><span class="line">Your Server IP: your_server_ip</span><br><span class="line">Your Server Port: your_server_port</span><br><span class="line">Your Password: your_password</span><br><span class="line">Your Encryption Method: your_encryption_method</span><br></pre></td></tr></table></figure>
 
+<p><img src="/images/ss-completed.png" alt="Shadowsocks installation script completed"></p>
 <p>Shadowsocks-libev has been set to start automatically on boot.</p>
 <p>Now it’s time to log off the server:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
 
 <h2 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h2><p>Switch to working on your PC. You can download the client for yout Windows PC from <a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks-windows/releases">https://github.com/shadowsocks/shadowsocks-windows/releases</a>. Download the latest zip file. After it’s downloaded, extract the zip file.</p>
-<p>Start the Shadowsocks application for the first time. For server IP, put the IP address of your server. The port to aim for is the port used by the server scrript. Put the password you chose on your server. Our example is <code>socKsecreT2021%d</code>. <strong>Apply</strong> the settings, then click <strong>OK</strong>.</p>
+<p><img src="/images/ss-unzipped.png" alt="Shadowsocks client for Windows download unzipped"></p>
+<p>Start the Shadowsocks application for the first time. For server IP, put the IP address of your server. The port to aim for is the port used by the server scrript. Put the password you chose on your server. Our example is <code>socKsecreT2021%d</code>. </p>
+<p><img src="/images/ss-server.png" alt="Shadowsocks server definition on Windows client"></p>
+<p><strong>Apply</strong> the settings, then click <strong>OK</strong>.</p>
 <p>Find the Shadowsocks icon in the system tray. That’s at the bottom right of your Windows desktop. Right-click on the icon to bring up the Shadowsocks menu. Set the System Proxy to <strong>Global</strong>.</p>
+<p><img src="/images/ss-global.png" alt="Shadowsocks system proxy set to Global mode"></p>
 <h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><p>Open a browser and visit <a target="_blank" rel="noopener" href="https://whatismyipaddress.com/">https://whatismyipaddress.com</a>. It should look as though you are coming from the server’s IP address and location, not your PC’s address and location.</p>
 <h2 id="Troubleshooting-and-Maintenance"><a href="#Troubleshooting-and-Maintenance" class="headerlink" title="Troubleshooting and Maintenance"></a>Troubleshooting and Maintenance</h2><p>You can view the status of Shadowsocks on your server with the command:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/shadowsocks status</span><br></pre></td></tr></table></figure>
