@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"seakfind.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Xray is a fork of V2Ray. By following this post, you can create an Xray Vmess + TLS + WebSocket server without having to buy a domain name. The server in this post runs Debian 11, and the client runs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xray Vmess + TLS + WS with Self-Signed Certificate">
+<meta property="og:url" content="https://seakfind.github.io/2021/10/08/Xray-Vmess-TLS-WS-with-Self-Signed-Certificate/index.html">
+<meta property="og:site_name" content="seakfind">
+<meta property="og:description" content="Xray is a fork of V2Ray. By following this post, you can create an Xray Vmess + TLS + WebSocket server without having to buy a domain name. The server in this post runs Debian 11, and the client runs">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-08T23:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-08T23:54:39.011Z">
+<meta property="article:author" content="seakfind">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://seakfind.github.io/2021/10/08/Xray-Vmess-TLS-WS-with-Self-Signed-Certificate/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://seakfind.github.io/2021/10/08/Xray-Vmess-TLS-WS-with-Self-Signed-Certificate/","path":"2021/10/08/Xray-Vmess-TLS-WS-with-Self-Signed-Certificate/","title":"Xray Vmess + TLS + WS with Self-Signed Certificate"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Xray Vmess + TLS + WS with Self-Signed Certificate | seakfind</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">seakfind</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-Nginx-on-Server"><span class="nav-number">1.</span> <span class="nav-text">Install Nginx on Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Self-Signed-Certificate"><span class="nav-number">2.</span> <span class="nav-text">Create Self-Signed Certificate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configure-Nginx"><span class="nav-number">3.</span> <span class="nav-text">Configure Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-V2Ray-on-Server"><span class="nav-number">4.</span> <span class="nav-text">Install V2Ray on Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configure-V2Ray-on-Server"><span class="nav-number">5.</span> <span class="nav-text">Configure V2Ray on Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Restart-V2Ray-on-Server"><span class="nav-number">6.</span> <span class="nav-text">Restart V2Ray on Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Download-V2Ray-to-Windows-Client"><span class="nav-number">7.</span> <span class="nav-text">Download V2Ray to Windows Client</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configure-Xray-on-Windows-Client"><span class="nav-number">8.</span> <span class="nav-text">Configure Xray on Windows Client</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Connect-Windows-Client-to-Server"><span class="nav-number">9.</span> <span class="nav-text">Connect Windows Client to Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-Firefox-Browser"><span class="nav-number">10.</span> <span class="nav-text">Install Firefox Browser</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configure-Firefox-Browser"><span class="nav-number">11.</span> <span class="nav-text">Configure Firefox Browser</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-Windows-Client-to-Server-Connection"><span class="nav-number">12.</span> <span class="nav-text">Test Windows Client to Server Connection</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">seakfind</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/10/08/Xray-Vmess-TLS-WS-with-Self-Signed-Certificate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="seakfind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seakfind">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xray Vmess + TLS + WS with Self-Signed Certificate
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-10-08 16:00:00 / Modified: 16:54:39" itemprop="dateCreated datePublished" datetime="2021-10-08T16:00:00-07:00">2021-10-08</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Xray is a fork of V2Ray. By following this post, you can create an Xray Vmess + TLS + WebSocket server without having to buy a domain name.</p>
+<p>The server in this post runs Debian 11, and the client runs Windows 11.</p>
+<h2 id="Install-Nginx-on-Server"><a href="#Install-Nginx-on-Server" class="headerlink" title="Install Nginx on Server"></a>Install Nginx on Server</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="Create-Self-Signed-Certificate"><a href="#Create-Self-Signed-Certificate" class="headerlink" title="Create Self-Signed Certificate"></a>Create Self-Signed Certificate</h2><p>Create a directory to hold your certificate:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /etc/openssl</span><br></pre></td></tr></table></figure>
+
+<p>Change into the directory that will hold your certificate:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/openssl</span><br></pre></td></tr></table></figure>
+
+<p>Generate a private key for your certificate:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl ecparam -out example.com.key -name secp384r1 -genkey</span><br></pre></td></tr></table></figure>
+
+<p>Generate a certificate signing request:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -sha256 -key example.com.key -out example.com.csr</span><br></pre></td></tr></table></figure>
+
+<p>Enter anything you like for Country Name, State or Province Name, Locality Name, Organization Name, and Organizational Unit Name. For example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Country Name (2 letter code) [AU]:</span><br><span class="line">State or Province Name (full name) [Some-State]:NSW</span><br><span class="line">Locality Name (eg, city) []:Sydney</span><br><span class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:</span><br><span class="line">Organizational Unit Name (eg, section) []:</span><br></pre></td></tr></table></figure>
+
+<p>For Common Name, put <code>example.com</code>.</p>
+<p>Leave Email Address blank.</p>
+<p>Leave the ‘extra’ attributes (challenge password and company name) blank.</p>
+<p>Sign the certificate signing request, creating your certificate:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -req -sha256 -days 365 -in example.com.csr -signkey example.com.key -out example.com.crt</span><br></pre></td></tr></table></figure>
+
+<p>Make the server private key readable:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +r example.com.key</span><br></pre></td></tr></table></figure>
+
+<h2 id="Configure-Nginx"><a href="#Configure-Nginx" class="headerlink" title="Configure Nginx"></a>Configure Nginx</h2><p>Generate Diffie-Hellman parameters:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl dhparam -out /etc/nginx/dhparam 2048;</span><br></pre></td></tr></table></figure>
+
+<p>This may take a long time.</p>
+<p>Edit the Nginx default site:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/nginx/sites-available/default</span><br></pre></td></tr></table></figure>
+
+<p>Delete the default contents, and enter contents as below:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80 default_server;</span><br><span class="line">    listen [::]:80 default_server;</span><br><span class="line">    location / &#123;</span><br><span class="line">        return 301 https://$host$request_uri;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">    listen [::]:443 ssl http2;</span><br><span class="line">    ssl_certificate /etc/openssl/example.com.crt;</span><br><span class="line">    ssl_certificate_key /etc/openssl/example.com.key;</span><br><span class="line">    ssl_session_timeout 1d;</span><br><span class="line">    ssl_session_cache shared:MozSSL:10m; </span><br><span class="line">    ssl_session_tickets off;</span><br><span class="line">    ssl_dhparam /etc/nginx/dhparam;</span><br><span class="line">    ssl_protocols TLSv1.2;</span><br><span class="line">    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;</span><br><span class="line">    </span><br><span class="line">    location /abcdefgh &#123;</span><br><span class="line">	proxy_redirect off;</span><br><span class="line">	proxy_pass http://127.0.0.1:12345;</span><br><span class="line">	proxy_http_version 1.1;</span><br><span class="line">	proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">	proxy_set_header Connection &quot;upgrade&quot;;</span><br><span class="line">	proxy_set_header Host $http_host;</span><br><span class="line">	proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Change <code>/abcdefgh</code> to a secret path of your choice.</p>
+<p>Save the configuration file.</p>
+<p>Restart Nginx:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="Install-V2Ray-on-Server"><a href="#Install-V2Ray-on-Server" class="headerlink" title="Install V2Ray on Server"></a>Install V2Ray on Server</h2><p>Change back to the home directory:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br></pre></td></tr></table></figure>
+
+<p>Download the installation script:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/XTLS/Xray-install/main/install-release.sh</span><br></pre></td></tr></table></figure>
+
+<p>Make the install script executable:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x install-release.sh</span><br></pre></td></tr></table></figure>
+
+<p>Run the installer:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./install-release.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="Configure-V2Ray-on-Server"><a href="#Configure-V2Ray-on-Server" class="headerlink" title="Configure V2Ray on Server"></a>Configure V2Ray on Server</h2><p>Edit the configuration file:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/local/etc/xray/config.json</span><br></pre></td></tr></table></figure>
+
+<p>Delete existing contents and insert as follows:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;log&quot;: &#123;</span><br><span class="line">    &quot;loglevel&quot;: &quot;warning&quot;,</span><br><span class="line">    &quot;access&quot;: &quot;/var/log/xray/access.log&quot;, </span><br><span class="line">    &quot;error&quot;: &quot;/var/log/xray/error.log&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;inbounds&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;port&quot;: 12345, </span><br><span class="line">      &quot;listen&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">      &quot;protocol&quot;: &quot;vmess&quot;,</span><br><span class="line">      &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;clients&quot;: [</span><br><span class="line">          &#123;</span><br><span class="line">            &quot;id&quot;: &quot;abe98b93-bd82-432f-8a41-0328a8aa5f5a&quot;,  </span><br><span class="line">            &quot;alterId&quot;: 64</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;streamSettings&quot;: &#123;</span><br><span class="line">        &quot;network&quot;: &quot;ws&quot;,</span><br><span class="line">        &quot;wsSettings&quot;: &#123;</span><br><span class="line">          &quot;path&quot;: &quot;/abcdefgh&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;outbounds&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;protocol&quot;: &quot;freedom&quot;,</span><br><span class="line">      &quot;settings&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Change <code>/abcdefgh</code> to the secret path of your choice that you configured Nginx to use.</p>
+<p>Change <code>abe98b93-bd82-432f-8a41-0328a8aa5f5a</code> to the UUID of your choice.</p>
+<p>Save the file with your edits.</p>
+<h2 id="Restart-V2Ray-on-Server"><a href="#Restart-V2Ray-on-Server" class="headerlink" title="Restart V2Ray on Server"></a>Restart V2Ray on Server</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart xray</span><br></pre></td></tr></table></figure>
+
+<p>End work on server:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<h2 id="Download-V2Ray-to-Windows-Client"><a href="#Download-V2Ray-to-Windows-Client" class="headerlink" title="Download V2Ray to Windows Client"></a>Download V2Ray to Windows Client</h2><p>Now work on your Windows PC that will be the client.</p>
+<p>Open a browser and go to <a target="_blank" rel="noopener" href="https://github.com/XTLS/Xray-core/releases">https://github.com/XTLS/Xray-core/releases</a>.</p>
+<p>Download the most recent release of <code>Xray-windows-64.zip</code>.</p>
+<p>Unzip <code>Xray-windows-64.zip</code>.</p>
+<h2 id="Configure-Xray-on-Windows-Client"><a href="#Configure-Xray-on-Windows-Client" class="headerlink" title="Configure Xray on Windows Client"></a>Configure Xray on Windows Client</h2><p>Copy and paste the configuration below into Windows Notepad:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;inbounds&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;port&quot;: 1080,</span><br><span class="line">      &quot;listen&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">      &quot;protocol&quot;: &quot;socks&quot;,</span><br><span class="line">      &quot;sniffing&quot;: &#123;</span><br><span class="line">        &quot;enabled&quot;: true,</span><br><span class="line">        &quot;destOverride&quot;: [&quot;http&quot;, &quot;tls&quot;]</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;auth&quot;: &quot;noauth&quot;,</span><br><span class="line">        &quot;udp&quot;: false</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;outbounds&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;protocol&quot;: &quot;vmess&quot;,</span><br><span class="line">      &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;vnext&quot;: [</span><br><span class="line">          &#123;</span><br><span class="line">            &quot;address&quot;: &quot;123.45.67.89&quot;,</span><br><span class="line">            &quot;port&quot;: 443,</span><br><span class="line">            &quot;users&quot;: [</span><br><span class="line">              &#123;</span><br><span class="line">                &quot;id&quot;: &quot;abe98b93-bd82-432f-8a41-0328a8aa5f5a&quot;,</span><br><span class="line">                &quot;alterId&quot;: 64</span><br><span class="line">              &#125;</span><br><span class="line">            ]</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;streamSettings&quot;: &#123;</span><br><span class="line">        &quot;network&quot;: &quot;ws&quot;,</span><br><span class="line">        &quot;security&quot;: &quot;tls&quot;,</span><br><span class="line">        &quot;tlsSettings&quot;: &#123;</span><br><span class="line">          &quot;allowInsecure&quot;: true,</span><br><span class="line">          &quot;serverName&quot;: &quot;example.com&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;wsSettings&quot;: &#123;</span><br><span class="line">          &quot;path&quot;: &quot;/abcdefgh&quot;,</span><br><span class="line">          &quot;headers&quot;: &#123;</span><br><span class="line">            &quot;Host&quot;: &quot;example.com&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Replace <code>123.45.67.89</code> by your server IP address.</p>
+<p>Change <code>/abcdefgh</code> to the secret path of your choice that you configured Nginx to use.</p>
+<p>Change <code>abe98b93-bd82-432f-8a41-0328a8aa5f5a</code> to the UUID of your choice.</p>
+<p>Save this in a file named <code>config.json</code> (with <em>no</em> <code>.txt</code> on the end) in the same folder as the Xray application, <code>Downloads\Xray-windows-64</code>.</p>
+<p>Close Notepad.</p>
+<h2 id="Connect-Windows-Client-to-Server"><a href="#Connect-Windows-Client-to-Server" class="headerlink" title="Connect Windows Client to Server"></a>Connect Windows Client to Server</h2><p>Open the Windows Run box with <strong>Win</strong>+<strong>r</strong>, type <code>cmd</code>, and click <strong>OK</strong>. This opens a Windows Command Prompt.</p>
+<p>Change into the Xray directory:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd Downloads\Xray-windows-64</span><br></pre></td></tr></table></figure>
+
+<p>Run Xray with your configuration file:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xray.exe -c config.json</span><br></pre></td></tr></table></figure>
+
+<p>If Windows Defender Firewall intervenes, click <strong>Allow access</strong>.</p>
+<h2 id="Install-Firefox-Browser"><a href="#Install-Firefox-Browser" class="headerlink" title="Install Firefox Browser"></a>Install Firefox Browser</h2><p>If you do not already have Firefox installed, install Firefox now from <a target="_blank" rel="noopener" href="https://www.mozilla.org/en-US/firefox/new">https://www.mozilla.org/en-US/firefox/new</a>.</p>
+<h2 id="Configure-Firefox-Browser"><a href="#Configure-Firefox-Browser" class="headerlink" title="Configure Firefox Browser"></a>Configure Firefox Browser</h2><p>In <strong>Settings</strong>, under <strong>Network Settings</strong>, configure Firefox to use a SOCKSv5 proxy server at IP address <code>127.0.0.1</code>, port <code>1080</code>. Check the box to proxy DNS requests when using SOCKS v5.</p>
+<h2 id="Test-Windows-Client-to-Server-Connection"><a href="#Test-Windows-Client-to-Server-Connection" class="headerlink" title="Test Windows Client to Server Connection"></a>Test Windows Client to Server Connection</h2><p>In Firefox, visit <a target="_blank" rel="noopener" href="https://whatismyipaddress.com/">https://whatismyipaddress.com</a>.</p>
+<p>You should see the IP address and location of your server, not your client.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/23/Build-Your-Own-Shadowsocks-Server/" rel="prev" title="Build Your Own Shadowsocks Server">
+                  <i class="fa fa-chevron-left"></i> Build Your Own Shadowsocks Server
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seakfind</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
