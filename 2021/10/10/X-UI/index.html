@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"seakfind.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="X-UI provides a graphical user interface for managing servers and users. You can visually build servers for Shadowsocks, V2ray, Xray, Trojan, and other popular protocols. You can also monitor VPS perf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="X-UI, a multi-user Xray graphical management panel (replacing V2-UI and V2Ray)">
+<meta property="og:url" content="https://seakfind.github.io/2021/10/10/X-UI/index.html">
+<meta property="og:site_name" content="seakfind">
+<meta property="og:description" content="X-UI provides a graphical user interface for managing servers and users. You can visually build servers for Shadowsocks, V2ray, Xray, Trojan, and other popular protocols. You can also monitor VPS perf">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://seakfind.github.io/images/xui001.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui002.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui003.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui004.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui005.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui006.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui007.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui008.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui009.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui010.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui011.png">
+<meta property="og:image" content="https://seakfind.github.io/images/xui012.png">
+<meta property="article:published_time" content="2021-10-10T23:06:00.000Z">
+<meta property="article:modified_time" content="2021-10-10T09:16:44.927Z">
+<meta property="article:author" content="seakfind">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://seakfind.github.io/images/xui001.png">
+
+
+<link rel="canonical" href="https://seakfind.github.io/2021/10/10/X-UI/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://seakfind.github.io/2021/10/10/X-UI/","path":"2021/10/10/X-UI/","title":"X-UI, a multi-user Xray graphical management panel (replacing V2-UI and V2Ray)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>X-UI, a multi-user Xray graphical management panel (replacing V2-UI and V2Ray) | seakfind</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">seakfind</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Preparation"><span class="nav-number">1.</span> <span class="nav-text">Preparation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Update-Server"><span class="nav-number">2.</span> <span class="nav-text">Update Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-Acme-Script"><span class="nav-number">3.</span> <span class="nav-text">Install Acme Script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Get-Free-SSL-Certificate"><span class="nav-number">4.</span> <span class="nav-text">Get Free SSL Certificate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Run-the-X-UI-Install-Script"><span class="nav-number">5.</span> <span class="nav-text">Run the X-UI Install Script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-Panel-Commands"><span class="nav-number">6.</span> <span class="nav-text">Common Panel Commands</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#First-Time-Login"><span class="nav-number">7.</span> <span class="nav-text">First Time Login</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Side-Menu"><span class="nav-number">8.</span> <span class="nav-text">Side Menu</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enable-HTTPS-on-Panel"><span class="nav-number">9.</span> <span class="nav-text">Enable HTTPS on Panel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Change-Admin-Password"><span class="nav-number">10.</span> <span class="nav-text">Change Admin Password</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Add-VLESS-XTLS-Xray-User"><span class="nav-number">11.</span> <span class="nav-text">Add VLESS+XTLS Xray User</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client"><span class="nav-number">12.</span> <span class="nav-text">Client</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">seakfind</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/10/10/X-UI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="seakfind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seakfind">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          X-UI, a multi-user Xray graphical management panel (replacing V2-UI and V2Ray)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-10-10 16:06:00 / Modified: 02:16:44" itemprop="dateCreated datePublished" datetime="2021-10-10T16:06:00-07:00">2021-10-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>X-UI provides a graphical user interface for managing servers and users. You can visually build servers for Shadowsocks, V2ray, Xray, Trojan, and other popular protocols. You can also monitor VPS performance and traffic usage in real time. X-UI replaces the older V2-UI panel. </p>
+<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>Before you begin, you need to do three or four things:</p>
+<ol>
+<li>Get a virtual private server or VPS. You can get a VPS from many providers. Some popular ones are AWS, Google Cloud, Microsoft Azure, DigitalOcean, Hetzner, and Vultr. In our example we use a Debian 11 VPS, but the X-UI install script supports Ubuntu 16+, Debian 8+, or CentOS 7+. You need to have ports 80 and 443 on your VPS open for TCP input. Also open port 54321 for TCP input.</li>
+<li>Get a domain name. Some low-cost registrars are Porkbun, Namesilo, and Namecheap.</li>
+<li>Create a DNS <code>A</code> record pointing from your host name to your VPS.</li>
+<li>Optionally, add your domain to Cloudflare. This will allow you to insert a content distribution network or CDN in between you and your server. However, if you are going to add a CDN, do not turn on proxying in Cloudflare until the end. For now, just use the DNS features of Cloudflare. Adding your domain to Cloudflare is optional, and you can continue to use your domain name registrar’s nameservers if you prefer. In any case, not all protocols support the use of CDN proxying.</li>
+</ol>
+<h2 id="Update-Server"><a href="#Update-Server" class="headerlink" title="Update Server"></a>Update Server</h2><p>SSH into your server. On Windows you can use the built-in PowerShell app, or you can install a terminal emulator such as PuTTY or XSHELL.</p>
+<p><img src="/images/xui001.png" alt="SSH into a server using XSHELL"></p>
+<p>Get your server up to date:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt update &amp;&amp; apt upgrade -y</span><br></pre></td></tr></table></figure>
+
+<p>Also install <code>curl</code> and <code>socat</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install curl socat -y</span><br></pre></td></tr></table></figure>
+
+<h2 id="Install-Acme-Script"><a href="#Install-Acme-Script" class="headerlink" title="Install Acme Script"></a>Install Acme Script</h2><p>Download and install the Acme script for getting a free SSL certificate:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://get.acme.sh | sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="Get-Free-SSL-Certificate"><a href="#Get-Free-SSL-Certificate" class="headerlink" title="Get Free SSL Certificate"></a>Get Free SSL Certificate</h2><p>Set the default provider to Let’s Encrypt:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.acme.sh/acme.sh --set-default-ca --server letsencrypt</span><br></pre></td></tr></table></figure>
+
+<p>Register your account for a free SSL certificate. In the next command, replace <code>xxxx@xxxx.com</code> by your actual email address:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.acme.sh/acme.sh --register-account -m xxxx@xxxx.com</span><br></pre></td></tr></table></figure>
+
+<p>Obtain an SSL certificate. In the next command, replace <code>host.mydomain.com</code> by your actual host name:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.acme.sh/acme.sh --issue -d host.mydomain.com --standalone</span><br></pre></td></tr></table></figure>
+
+<p>After a minute or so, the script terminates. On success, you will receive feedback as to the location of the certificate and key:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Your cert is in: /root/.acme.sh/host.mydomain.com/host.mydomain.com.cer</span><br><span class="line">Your cert key is in: /root/.acme.sh/host.mydomain.com/host.mydomain.com.key</span><br><span class="line">The intermediate CA cert is in: /root/.acme.sh/host.mydomain.com/ca.cer</span><br><span class="line">And the full chain certs is there: /root/.acme.sh/host.mydomain.com/fullchain.cer</span><br></pre></td></tr></table></figure>
+
+<p>You cannot use the certificate and key in their current locations, as these may be temporary. Therefore install the certificate and key to a permanent location. In the next command, replace <code>host.mydomain.com</code> by your actual host name:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.acme.sh/acme.sh --installcert -d host.mydomain.com --key-file /root/private.key --fullchain-file /root/cert.crt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/xui002.png" alt="Install certificate and key issued by Acme script"></p>
+<h2 id="Run-the-X-UI-Install-Script"><a href="#Run-the-X-UI-Install-Script" class="headerlink" title="Run the X-UI Install Script"></a>Run the X-UI Install Script</h2><p>Download and run the one-click install script provided by the developer:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash &lt;(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Common-Panel-Commands"><a href="#Common-Panel-Commands" class="headerlink" title="Common Panel Commands"></a>Common Panel Commands</h2><p>From the command line, you can control the server with various commands:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>x-ui</code></td>
+<td>Display the management menu</td>
+</tr>
+<tr>
+<td><code>x-ui start</code></td>
+<td>Start the X-UI panel</td>
+</tr>
+<tr>
+<td><code>x-ui stop</code></td>
+<td>Stop the X-UI panel</td>
+</tr>
+<tr>
+<td><code>x-ui restart</code></td>
+<td>Restart the X-UI panel</td>
+</tr>
+<tr>
+<td><code>x-ui status</code></td>
+<td>View X-UI status</td>
+</tr>
+<tr>
+<td><code>x-ui enable</code></td>
+<td>Set X-UI to start automatically after boot</td>
+</tr>
+<tr>
+<td><code>x-ui disable</code></td>
+<td>Cancel X-UI boot from start</td>
+</tr>
+<tr>
+<td><code>x-ui log</code></td>
+<td>View X-UI log</td>
+</tr>
+<tr>
+<td><code>x-ui update</code></td>
+<td>Update the X-UI panel</td>
+</tr>
+<tr>
+<td><code>x-ui install</code></td>
+<td>Install X-UI panel</td>
+</tr>
+<tr>
+<td><code>x-ui uninstall</code></td>
+<td>Uninstall X-UI panel</td>
+</tr>
+</tbody></table>
+<h2 id="First-Time-Login"><a href="#First-Time-Login" class="headerlink" title="First Time Login"></a>First Time Login</h2><p>You can get to the X-UI panel on your PC by opening a browser and typing your server IP address and port <code>54321</code>. For example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://123.45.67.89:54321</span><br></pre></td></tr></table></figure>
+
+<p>By default, the login user name is <code>admin</code>, and the password is also <code>admin</code>. </p>
+<p><img src="/images/xui003.png" alt="First-time login to X-UI panel"></p>
+<h2 id="Side-Menu"><a href="#Side-Menu" class="headerlink" title="Side Menu"></a>Side Menu</h2><p>After you have logged in, the side menu offers these options:</p>
+<table>
+<thead>
+<tr>
+<th>Chinese</th>
+<th>English</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统状态</td>
+<td>System status</td>
+</tr>
+<tr>
+<td>入站列表</td>
+<td>Inbound list</td>
+</tr>
+<tr>
+<td>面板设置</td>
+<td>Panel settings</td>
+</tr>
+<tr>
+<td>其他</td>
+<td>Other</td>
+</tr>
+<tr>
+<td>退出登录</td>
+<td>Sign out</td>
+</tr>
+</tbody></table>
+<p><img src="/images/xui004.png" alt="Side menu on X-UI panel"></p>
+<h2 id="Enable-HTTPS-on-Panel"><a href="#Enable-HTTPS-on-Panel" class="headerlink" title="Enable HTTPS on Panel"></a>Enable HTTPS on Panel</h2><p>You will notice that, at first, you used plain text HTTP to reach the panel. This is not secure.</p>
+<p>To enable HTTPS, choose <strong>面板设置</strong> (Panel settings).</p>
+<p>You will need to specify your certificate and key.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">面板证书公钥文件路径</span><br><span class="line">填写一个 &#x27;/&#x27; 开头的绝对路径，重启面板生效</span><br><span class="line">Panel certificate public key file path</span><br><span class="line">Fill in an absolute path starting with&#x27;/&#x27;, restart the panel to take effect</span><br></pre></td></tr></table></figure>
+
+<p>Fill in <code>/root/cert.crt</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">面板证书密钥文件路径</span><br><span class="line">填写一个 &#x27;/&#x27; 开头的绝对路径，重启面板生效</span><br><span class="line">Panel certificate key file path</span><br><span class="line">Fill in an absolute path starting with&#x27;/&#x27;, restart the panel to take effect </span><br></pre></td></tr></table></figure>
+
+<p>Fill in <code>/root/private.key</code>.</p>
+<p><img src="/images/xui005.png" alt="Specifying certificate and key in X-UI panel settings"></p>
+<p>Save these options.</p>
+<p>Now in your SSH session issue the command:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x-ui restart</span><br></pre></td></tr></table></figure>
+
+<p>Now you can reach the panel using HTTPS. For example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://host.mydomain.com:54321</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/xui006.png" alt="HTTPS login to X-UI panel"></p>
+<h2 id="Change-Admin-Password"><a href="#Change-Admin-Password" class="headerlink" title="Change Admin Password"></a>Change Admin Password</h2><p>The default admin user name <code>admin</code> and password <code>admin</code> are the same for all installations. This is not secure. Input the old values of <code>admin</code> and <code>admin</code>, and choose new, unique values:</p>
+<table>
+<thead>
+<tr>
+<th>Chinese</th>
+<th>English</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原用户名</td>
+<td>Original user name</td>
+</tr>
+<tr>
+<td>原密码</td>
+<td>Old password</td>
+</tr>
+<tr>
+<td>新用户名</td>
+<td>New user name</td>
+</tr>
+<tr>
+<td>新密码</td>
+<td>New password</td>
+</tr>
+</tbody></table>
+<p><img src="/images/xui007.png" alt="X-UI panel change user name and password"></p>
+<p>Save the new values.</p>
+<p>Sign out, then sign in again with the new user name and password.</p>
+<p><img src="/images/xui008.png" alt="HTTPS login with new user name and password"></p>
+<h2 id="Add-VLESS-XTLS-Xray-User"><a href="#Add-VLESS-XTLS-Xray-User" class="headerlink" title="Add VLESS+XTLS Xray User"></a>Add VLESS+XTLS Xray User</h2><p>We are going to add an inbound user account using VLESS and Xray. VLESS is an an updated version of the older Vmess protocol. After several developers found flaws in Vmess protocol and showed that the Vmess protocol can be detected by deep packet inspection or DPI, VLESS was developed. (Note that it is plain Vmess that can be detected; Vmess+WS+TLS is still secure and supports the use of a CDN.) Xray core was developed as an alternative to the older V2Ray core. According to the Xray developers, Xray is more stable, better for UDP gaming, and 30% faster than V2Ray. XTLS speeds up TLS by reducing double-encryption.</p>
+<p>On the side menu, select <strong>入站列表</strong> (Inbound list).</p>
+<p>The <strong>添加入站</strong> (Add inbound) box appears. </p>
+<p>Click the plus sign to add a new user. Enter fields as follows.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Remark</td>
+<td>Put a unique and meaningful description</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>On</td>
+</tr>
+<tr>
+<td>Protocol</td>
+<td><code>vless</code></td>
+</tr>
+<tr>
+<td>监听 IP Listening IP</td>
+<td>Leave blank</td>
+</tr>
+<tr>
+<td>端口 Port</td>
+<td><code>443</code></td>
+</tr>
+<tr>
+<td>总流量(GB) Total bandwidth (GB)</td>
+<td><code>0</code> means unlimited</td>
+</tr>
+<tr>
+<td>到期时间 Expiry date</td>
+<td>Blank</td>
+</tr>
+<tr>
+<td>Id</td>
+<td>Leave the generated UUID as is</td>
+</tr>
+<tr>
+<td>Flow</td>
+<td><code>xtls-rprx-direct</code></td>
+</tr>
+<tr>
+<td>Fallbacks</td>
+<td>None</td>
+</tr>
+<tr>
+<td>传输 Transmission</td>
+<td><code>tcp</code></td>
+</tr>
+<tr>
+<td>HTTP 伪装 masquerading</td>
+<td>Off</td>
+</tr>
+<tr>
+<td>TLS</td>
+<td>Off</td>
+</tr>
+<tr>
+<td>XTLS</td>
+<td>On</td>
+</tr>
+<tr>
+<td>域名 Domain name</td>
+<td>Put your host name, e.g. <code>host.mydomain.com</code></td>
+</tr>
+<tr>
+<td>公钥文件路径 Public key file path</td>
+<td><code>/root/cert.crt</code></td>
+</tr>
+<tr>
+<td>密钥文件路径 Key file path</td>
+<td><code>/root/private.key</code></td>
+</tr>
+<tr>
+<td>Sniffing</td>
+<td>On</td>
+</tr>
+</tbody></table>
+<p><img src="/images/xui009.png" alt="Adding a new VLESS+XTLS user"></p>
+<p>Save the new user.</p>
+<p>Click the <strong>操作</strong> (operating) button at the start of its row to display the QR code for the new user.</p>
+<p><img src="/images/xui010.png" alt="Displaying QR code in X-UI panel"></p>
+<h2 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h2><p>Clients are available for Android, iOS, Windows, macOS, and Linux. Examples are v2rayNG, Shadowrocket, and Qv2ray.</p>
+<p>Add the profile in the QR code to your client.</p>
+<p><img src="/images/xui011.png" alt="Example of Qv2ray client"></p>
+<p>You can check that your connection is working by opening a browser and going to <a target="_blank" rel="noopener" href="https://whatismyipaddress.com/">https://whatismyipaddress.com</a>.</p>
+<p><img src="/images/xui012.png" alt="whatismyipaddress.com"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/08/Shadowsocks-V2Ray-Plugin-with-Self-Signed-Certificate/" rel="prev" title="Shadowsocks + V2Ray Plugin with Self-Signed Certificate">
+                  <i class="fa fa-chevron-left"></i> Shadowsocks + V2Ray Plugin with Self-Signed Certificate
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seakfind</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
