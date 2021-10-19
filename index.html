@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -147,6 +147,195 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/10/18/Windows-SoftEther-VPN-Server/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="seakfind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seakfind">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/18/Windows-SoftEther-VPN-Server/" class="post-title-link" itemprop="url">Windows SoftEther VPN Server</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-10-18 18:00:00 / Modified: 18:21:09" itemprop="dateCreated datePublished" datetime="2021-10-18T18:00:00-07:00">2021-10-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>This post shows you how to use a Windows computer as a VPN server. This might be helpful in many scenarios. For example:</p>
+<ul>
+<li>Employees need to connect to a company LAN from outside the office</li>
+<li>You want to securely access the Internet from a coffee shop or airport</li>
+<li>You have a friend in a foreign country who needs unblocked access to the Internet</li>
+</ul>
+<p>After you’ve followed along with this tutorial, you’ll have a working L2TP/IPsec server on your Windows computer.</p>
+<h2 id="Step-1-Open-Firewall"><a href="#Step-1-Open-Firewall" class="headerlink" title="Step 1. Open Firewall"></a>Step 1. Open Firewall</h2><p>For traffic to reach an L2TP/IPsec server, you need to open ports 500/udp, 1701/udp, and 4500/udp in your computer’s firewall. On your Windows computer, you do that like this:</p>
+<ol>
+<li>In the Windows search box (next to the Start button), type <code>firewall</code></li>
+<li>Select <strong>Windows Defender Firewall with Advanced Security</strong></li>
+<li>In the left pane, click <strong>Inbound Rules</strong></li>
+<li>In the Actions pane on the right, click <strong>New Rule…</strong></li>
+<li>In the New Inbound Rule Wizard window, select <strong>Port</strong>, and click <strong>Next</strong></li>
+<li>In the Protocol and Ports window, select <strong>UDP</strong>, and in the <strong>Specific local ports</strong> field, type <code>500, 1701, 4500</code> and click Next</li>
+<li>In the Action window, select <strong>Allow the connection</strong>, and click <strong>Next</strong></li>
+<li>Check all profiles, and click <strong>Next</strong></li>
+<li>Enter a Name such as <code>L2TP/IPsec</code>, and click <strong>Finish</strong></li>
+<li>Close the Windows Defender Firewall with Advanced Security</li>
+</ol>
+<p><img src="/images/se001.png" alt="Windows Defender Firewall with Advanced Security new rule specifying protocol and ports"></p>
+<p>In a typical home network, where you are behind a router, you also need to:</p>
+<ul>
+<li>Open ports 500/udp, 1701/udp, and 4500/udp for input</li>
+<li>Port forward these ports from your router to your PC</li>
+</ul>
+<p>Instructions for doing the above vary from router to router. Consult your router documentation to learn how to do these steps on your particular make and model of router.</p>
+<p>One more point about home PCs! You need a Power Plan that ensures your computer will not be asleep when clients try to connect. You can change the power settings on a Windows PC like this:</p>
+<ol>
+<li>Right-click on the Windows Start button, and select <strong>Settings</strong></li>
+<li>Click <strong>System</strong></li>
+<li>Select <strong>Power &amp; sleep</strong></li>
+<li>Change the settings for <strong>Sleep</strong> to <strong>Never</strong></li>
+<li>When you’re done, close the Settings app.</li>
+</ol>
+<h2 id="Step-2-Download-SoftEther-VPN-Server"><a href="#Step-2-Download-SoftEther-VPN-Server" class="headerlink" title="Step 2. Download SoftEther VPN Server"></a>Step 2. Download SoftEther VPN Server</h2><p>Now for the download of the SoftEther VPN installer:</p>
+<ol>
+<li>Open a browser</li>
+<li>Visit <a target="_blank" rel="noopener" href="https://www.softether.org/">https://www.softether.org</a></li>
+<li>Click <strong>Download</strong></li>
+<li>Click <strong>Download SoftEther VPN</strong></li>
+<li>Select <strong>SoftEther VPN (Freeware)</strong></li>
+<li>Select Component <strong>SoftEther VPN Server</strong></li>
+<li>Select Platform <strong>Windows</strong></li>
+<li>Select CPU <strong>Intel (x86 and x64)</strong></li>
+<li>Download the latest build</li>
+</ol>
+<p><img src="/images/se002.png" alt="Download SoftEther VPN Server for Windows"></p>
+<h2 id="Step-3-Run-the-Installer"><a href="#Step-3-Run-the-Installer" class="headerlink" title="Step 3. Run the Installer"></a>Step 3. Run the Installer</h2><p>In your Downloads folder, find the Installer executable. It will have a name that looks like <code>softether-vpnserver_vpnbridge-v4.38-9760-rtm-2021.08.17-windows-x86_x64-intel</code>.</p>
+<p>Run the installer executable.</p>
+<ol>
+<li>Read the initial information screen, then click <strong>Next</strong></li>
+<li>If User Account Control pops up, click <strong>Yes</strong> to allow changes to your device</li>
+<li>Select software component <strong>SoftEther VPN Server</strong>, and click <strong>Next</strong></li>
+<li>Read the End User License Agreement, check the box to agree to the End User License Agreement, and click <strong>Next</strong></li>
+<li>Read the Important Notices, and click <strong>Next</strong></li>
+<li>Accept the default directory, <code>C:\Program Files\SoftEther VPN Server</code>, and click <strong>Next</strong></li>
+<li>On the Ready to Install screen, click <strong>Next</strong></li>
+</ol>
+<p>Wait while the installer runs. A SoftEther VPN Server Manager icon is created on your desktop. At the end of the installation, leave the box checked to immediately run SoftEther VPN Server Manager, and click <strong>Finish</strong>.</p>
+<p><img src="/images/se003.png" alt="SoftEther VPN Setup Wizard finished"></p>
+<h2 id="Step-4-Set-the-VPN-Server-Password"><a href="#Step-4-Set-the-VPN-Server-Password" class="headerlink" title="Step 4. Set the VPN Server Password"></a>Step 4. Set the VPN Server Password</h2><p>The SoftEther VPN Server Manager is started for you by the installer.</p>
+<p><img src="/images/se004a.png" alt="SoftEther VPN Server Manager"></p>
+<p>Leave the server <code>localhost (This server)</code> selected, then press the <strong>Connect</strong> button. The first time you do this, you will be prompted to enter and confirm a password for the server. Click <strong>OK</strong> when you’re done.</p>
+<p><img src="/images/se004b.png" alt="SoftEther VPN Server Manager change administrator password"></p>
+<p>Click <strong>OK</strong> on seeing the password change confirmation box.</p>
+<h2 id="Step-5-SoftEther-VPN-Server-Easy-Setup"><a href="#Step-5-SoftEther-VPN-Server-Easy-Setup" class="headerlink" title="Step 5. SoftEther VPN Server Easy Setup"></a>Step 5. SoftEther VPN Server Easy Setup</h2><p>The first time into the server, a wizard walks you through the SoftEther VPN Server Easy Setup process.</p>
+<h3 id="Step-5a-Create-Virtual-Hub"><a href="#Step-5a-Create-Virtual-Hub" class="headerlink" title="Step 5a. Create Virtual Hub"></a>Step 5a. Create Virtual Hub</h3><p>Check the box for Remote Access VPN Server, and click <strong>Next</strong>.</p>
+<p><img src="/images/se005.png" alt="SoftEther virtual hub for remote access VPN server"></p>
+<p>A message appears saying that the settings of this VPN Server will be initialized. The box asks if you really want to do this. Click <strong>Yes</strong>.</p>
+<p>Give the Virtual Hub a Name, such as the default of <code>VPN</code>, and click <strong>OK</strong>.</p>
+<h3 id="Step-5b-Dynamic-DNS-Function"><a href="#Step-5b-Dynamic-DNS-Function" class="headerlink" title="Step 5b. Dynamic DNS Function"></a>Step 5b. Dynamic DNS Function</h3><p>SoftEther automatically assigns you a dynamic DNS name. It will look like <code>vpn322055929.softether.net</code>. </p>
+<p>Click <strong>Exit</strong>.</p>
+<p><img src="/images/se006.png" alt="SoftEther Dynamic DNS Function"></p>
+<h3 id="Step-5c-IPsec-L2TP-EtherIP-L2TPv3-Server-Settings"><a href="#Step-5c-IPsec-L2TP-EtherIP-L2TPv3-Server-Settings" class="headerlink" title="Step 5c. IPsec / L2TP / EtherIP/ L2TPv3 Server Settings"></a>Step 5c. IPsec / L2TP / EtherIP/ L2TPv3 Server Settings</h3><p>Check the box for <strong>Enable L2TP Server Function (L2TP over IPsec)</strong>.</p>
+<p>Enter a preshared key in the IPsec Pre-Shared Key box. It must be eight characters – for example, <code>abcd1234</code>.</p>
+<p>Click <strong>OK</strong>.</p>
+<p><img src="/images/se007.png" alt="SoftEther IPsec / L2TP / EtherIP/ L2TPv3 Server Settings"></p>
+<h3 id="Step-5d-VPN-Azure-Service-Settings"><a href="#Step-5d-VPN-Azure-Service-Settings" class="headerlink" title="Step 5d. VPN Azure Service Settings"></a>Step 5d. VPN Azure Service Settings</h3><p>Select the radio button for <strong>Disable VPN Azure</strong>.</p>
+<p>Click <strong>OK</strong>.</p>
+<p><img src="/images/se008.png" alt="SoftEther VPN Azure Service Settings"></p>
+<h3 id="Step-5e-Create-User"><a href="#Step-5e-Create-User" class="headerlink" title="Step 5e. Create User"></a>Step 5e. Create User</h3><p>Click the button <strong>Create Users</strong>.</p>
+<ol>
+<li>Enter a username</li>
+<li>Enter the full name for this user</li>
+<li>Select Auth Type <strong>Password Authentication</strong></li>
+<li>Enter and confirm the password</li>
+<li>Click <strong>OK</strong></li>
+<li>When the confirmation box appears, click <strong>OK</strong></li>
+<li>Since we need only one user for now, click <strong>Exit</strong></li>
+</ol>
+<p><img src="/images/se009.png" alt="SoftEther create user"></p>
+<h3 id="Stef-5f-Enable-SecureNAT"><a href="#Stef-5f-Enable-SecureNAT" class="headerlink" title="Stef 5f. Enable SecureNAT"></a>Stef 5f. Enable SecureNAT</h3><p>SecureNAT function is an innovative proprietary technology developed for SoftEther that enables the creation of a more secure network. SecureNAT provides two functions: virtual NAT and virtual DHCP.</p>
+<p>On the screen to manage the VPN server on localhost:</p>
+<ol>
+<li>Select the row for the default Virtual Hub, which we named just VPN</li>
+<li>Click <strong>Manage Virtual Hub</strong></li>
+<li>Click <strong>Virtual NAT and Virtual DHCP Server (SecureNAT)</strong></li>
+<li>Click <strong>Enable SecureNAT</strong></li>
+<li>Click <strong>OK</strong></li>
+<li>Click <strong>Exit</strong></li>
+<li>Click <strong>Exit</strong></li>
+</ol>
+<p><img src="/images/se010.png" alt="SoftEther virtual hub with SecureNAT enabled"></p>
+<p>You server work is done for now. Let’s test it with your first client.</p>
+<h2 id="Step-6-Install-and-Configure-Client"><a href="#Step-6-Install-and-Configure-Client" class="headerlink" title="Step 6. Install and Configure Client"></a>Step 6. Install and Configure Client</h2><p>An L2TP/IPsec client is built in to many devices. We will use a Windows client to test the server. The client PC must be a different PC, and at a different location, from the server PC.</p>
+<p>On the <em>client</em> PC, in the Settings app, open the <strong>Network &amp; Internet</strong> section. Select the <strong>VPN</strong> screen. Click <strong>Add VPN</strong>.</p>
+<ol>
+<li>For the VPN Provider, select <strong>Windows (built-in)</strong></li>
+<li>Put a connection name of your choice, e.g. <code>New York</code></li>
+<li>For server address, put the one assigned to your server, e.g. <code>vpn322055929.softether.net</code></li>
+<li>For the VPN type, select <strong>L2TP/IPsec with pre-shared key</strong></li>
+<li>For the Pre-shared key, type the one you specified on the server, e.g. <code>abcd1234</code></li>
+<li>For Type of sign-in info, select <strong>User name and password</strong></li>
+<li>For the User name, type the one you set up on the server</li>
+<li>For the Password, type the one you set up on the server</li>
+<li>Check <strong>Remember my sign-in info</strong></li>
+<li>Check <strong>Save</strong></li>
+</ol>
+<p><img src="/images/se012.png" alt="Windows built-in VPN client for L2TP/IPsec with pre-shared key"></p>
+<h2 id="Step-7-Test-Client-to-Server-Connnection"><a href="#Step-7-Test-Client-to-Server-Connnection" class="headerlink" title="Step 7. Test Client to Server Connnection"></a>Step 7. Test Client to Server Connnection</h2><p>On the row for the VPN connection you just added, click <strong>Connect</strong>. The status changes to Connected.</p>
+<p>Open a browser, and visit <a target="_blank" rel="noopener" href="https://whatismyipaddress.com/">https://whatismyipaddress.com</a>.</p>
+<p>You should see the IP address and location of your VPN server, not your client.</p>
+<p>Congratulations! </p>
+<p>You now have a working VPN server, ready to receive client connections.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
