@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -147,6 +147,87 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/10/19/Split-Tunneling-in-OpenVPN-Client-on-Windows/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="seakfind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seakfind">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/19/Split-Tunneling-in-OpenVPN-Client-on-Windows/" class="post-title-link" itemprop="url">Split Tunneling in OpenVPN Client on Windows</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-10-19 00:00:00 / Modified: 04:25:49" itemprop="dateCreated datePublished" datetime="2021-10-19T00:00:00-07:00">2021-10-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>The official OpenVPN client for Windows offers per-IP split tunneling. Some proprietary clients also offer per-app split tunneling.</p>
+<p>To look up IP addresses, open a Windows terminal (Command Prompt or Windows PowerShell) and issue the command:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nslookup whatismyipaddress.com</span><br></pre></td></tr></table></figure>
+
+<p>Sample response:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Non-authoritative answer:</span><br><span class="line">Name:    whatismyipaddress.com</span><br><span class="line">Addresses:  104.16.155.36</span><br><span class="line">            104.16.154.36</span><br></pre></td></tr></table></figure>
+
+<p>To send only two IP addresses through the VPN tunnel:</p>
+<ol>
+<li>Disconnect the client from the server</li>
+<li>Edit the client configuration file</li>
+<li>Add these lines at the end before reconnecting</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">route 104.16.154.36 255.255.255.255 vpn_gateway</span><br><span class="line">route 104.16.155.36 255.255.255.255 vpn_gateway</span><br><span class="line">route 0.0.0.0 192.0.0.0 net_gateway</span><br><span class="line">route 64.0.0.0 192.0.0.0 net_gateway</span><br><span class="line">route 128.0.0.0 192.0.0.0 net_gateway</span><br><span class="line">route 192.0.0.0 192.0.0.0 net_gateway</span><br></pre></td></tr></table></figure>
+
+<p>To send everything <em>except</em> two IP addresses through the VPN tunnel:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">route 104.16.154.36 255.255.255.255 net_gateway</span><br><span class="line">route 104.16.155.36 255.255.255.255 net_gateway</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
