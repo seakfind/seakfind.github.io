@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"seakfind.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="ScenarioThe scenario in this post is that we have a server and client, both running Debian 11. The server is named moon and the client is named carol. The virtual addresses for the VPN will come from">
+<meta property="og:type" content="article">
+<meta property="og:title" content="strongSwan Server and Client on Debian 11">
+<meta property="og:url" content="https://seakfind.github.io/2021/10/21/strongSwan-Server-and-Client-on-Debian-11/index.html">
+<meta property="og:site_name" content="seakfind">
+<meta property="og:description" content="ScenarioThe scenario in this post is that we have a server and client, both running Debian 11. The server is named moon and the client is named carol. The virtual addresses for the VPN will come from">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://seakfind.github.io/images/network-manager-strongswan.png">
+<meta property="article:published_time" content="2021-10-21T21:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-21T21:35:03.958Z">
+<meta property="article:author" content="seakfind">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://seakfind.github.io/images/network-manager-strongswan.png">
+
+
+<link rel="canonical" href="https://seakfind.github.io/2021/10/21/strongSwan-Server-and-Client-on-Debian-11/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://seakfind.github.io/2021/10/21/strongSwan-Server-and-Client-on-Debian-11/","path":"2021/10/21/strongSwan-Server-and-Client-on-Debian-11/","title":"strongSwan Server and Client on Debian 11"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>strongSwan Server and Client on Debian 11 | seakfind</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">seakfind</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Scenario"><span class="nav-number">1.</span> <span class="nav-text">Scenario</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-a-k-a-Responder"><span class="nav-number">2.</span> <span class="nav-text">Server a.k.a. Responder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-a-k-a-Initiator-%E2%80%93-GUI-Method"><span class="nav-number">3.</span> <span class="nav-text">Client a.k.a. Initiator – GUI Method</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-a-k-a-Initiator-%E2%80%93-Legacy-Method"><span class="nav-number">4.</span> <span class="nav-text">Client a.k.a. Initiator – Legacy Method</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-a-k-a-Initiator-%E2%80%93-VICI-Method"><span class="nav-number">5.</span> <span class="nav-text">Client a.k.a. Initiator – VICI Method</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">seakfind</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://seakfind.github.io/2021/10/21/strongSwan-Server-and-Client-on-Debian-11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="seakfind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seakfind">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          strongSwan Server and Client on Debian 11
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-10-21 14:00:00 / Modified: 14:35:03" itemprop="dateCreated datePublished" datetime="2021-10-21T14:00:00-07:00">2021-10-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>The scenario in this post is that we have a server and client, both running Debian 11. The server is named <code>moon</code> and the client is named <code>carol</code>. The virtual addresses for the VPN will come from the range <code>172.16.252.0/24</code>.</p>
+<h2 id="Server-a-k-a-Responder"><a href="#Server-a-k-a-Responder" class="headerlink" title="Server a.k.a. Responder"></a>Server a.k.a. Responder</h2><p>Various firewalls are available for Debian 11. Whichever one you implement, you must add these firewall rules for IPsec:</p>
+<ul>
+<li>Open input port 500/udp</li>
+<li>Open input port 4500/udp</li>
+<li>Open input protocol 50 (AH)</li>
+<li>Open input protocol 51 (ESP)</li>
+<li>Masquerade output from input source address <code>172.16.252.0/24</code></li>
+</ul>
+<p>Of course, <code>172.16.252.0/24</code> is just the example used here for the virtual IP addresses assigned to clients. You can change it if you prefer.</p>
+<p>When you’ve opened your firewall, enable packet forwarding in the Linux kernel. Edit <code>/etc/sysctl.conf</code>. Uncomment the line <code>net.ipv4.ip_forward=1</code>. Save the file, and make this change effective immediately:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -p </span><br></pre></td></tr></table></figure>
+
+<p>Install strongSwan:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt update &amp;&amp; apt upgrade</span><br><span class="line"></span><br><span class="line">apt install strongswan libstrongswan libstrongswan-extra-plugins libstrongswan-standard-plugins network-manager-strongswan strongswan-charon strongswan-libcharon strongswan-nm strongswan-pki strongswan-starter strongswan-swanctl libcharon-extra-plugins charon-systemd</span><br></pre></td></tr></table></figure>
+
+<p>Debian 11 has strongSwan version 5.9.1 in its repositories.</p>
+<p>Generate CA certificate:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pki --gen &gt; /etc/swanctl/private/caKey.der</span><br><span class="line"></span><br><span class="line">chmod 600 /etc/swanctl/private/caKey.der</span><br><span class="line"></span><br><span class="line">pki --self --ca --in /etc/swanctl/private/caKey.der --dn &quot;C=CH, O=Example, CN=Example CA&quot; --ca &gt; /etc/swanctl/x509ca/caCert.der</span><br></pre></td></tr></table></figure>
+
+<p>Generate server a.k.a. responder certificate, replacing <code>moon.example.com</code> in the commands below by the actual hostname of the server:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pki --gen &gt; /etc/swanctl/private/moonKey.der</span><br><span class="line"></span><br><span class="line">chmod 600 /etc/swanctl/private/moonKey.der</span><br><span class="line"></span><br><span class="line">pki --pub --in /etc/swanctl/private/moonKey.der | pki --issue --cacert /etc/swanctl/x509ca/caCert.der --cakey /etc/swanctl/private/caKey.der --dn &quot;C=CH, O=Example, CN=moon.example.com&quot; --san moon.example.com --flag serverAuth --flag ikeIntermediate &gt; /etc/swanctl/x509/moonCert.der</span><br></pre></td></tr></table></figure>
+
+<p>Generate client a.k.a. initiator certificate, replacing <code>carol@example.com</code> in the commands below by the actual identifier of the client:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pki --gen &gt; /etc/swanctl/private/carolKey.der</span><br><span class="line"></span><br><span class="line">chmod 600 /etc/swanctl/private/carolKey.der</span><br><span class="line"></span><br><span class="line">pki --pub --in /etc/swanctl/private/carolKey.der | pki --issue --cacert /etc/swanctl/x509ca/caCert.der --cakey /etc/swanctl/private/caKey.der --dn &quot;C=CH, O=Example, CN=carol@example.com&quot; --san carol@example.com &gt; /etc/swanctl/x509/carolCert.der</span><br></pre></td></tr></table></figure>
+
+<p>The Versatile IKE Configuration Interface or VICI was introduced in 2014 and has been enabled by default since 2016. It is intended to replace the older, legacy style of configuration file. </p>
+<p>Edit the VICI configuration file, <code>/etc/swanctl/swanctl.conf</code>. Delete the existing contents and insert the following, replacing <code>moon.example.com</code> by the actual hostname of the server:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">connections &#123;</span><br><span class="line">    ikev2-pubkey &#123;</span><br><span class="line">        version = 2</span><br><span class="line">        proposals = aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072,default</span><br><span class="line">        rekey_time = 0s</span><br><span class="line">        pools = primary-pool-ipv4</span><br><span class="line">        fragmentation = yes</span><br><span class="line">        dpd_delay = 30s</span><br><span class="line">        local &#123;</span><br><span class="line">            certs = /etc/swanctl/x509/moonCert.der</span><br><span class="line">            id = moon.example.com</span><br><span class="line">        &#125;</span><br><span class="line">        remote &#123;</span><br><span class="line">            auth = pubkey</span><br><span class="line">        &#125;</span><br><span class="line">        children &#123;</span><br><span class="line">            ikev2-pubkey &#123;</span><br><span class="line">                local_ts = 0.0.0.0/0</span><br><span class="line">                rekey_time = 0s</span><br><span class="line">                dpd_action = clear</span><br><span class="line">                esp_proposals = aes192gcm16-aes128gcm16-prfsha256-ecp256-modp3072,aes192-sha256-ecp256-modp3072,default</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">pools &#123;</span><br><span class="line">    primary-pool-ipv4 &#123;</span><br><span class="line">        addrs = 172.16.252.0/24</span><br><span class="line">        dns = 1.1.1.1, 8.8.8.8</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">secrets &#123;</span><br><span class="line">    private-key &#123;</span><br><span class="line">        file = /etc/swanctl/private/moonKey.der</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Restart strongSwan:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart strongswan-swanctl</span><br></pre></td></tr></table></figure>
+
+<h2 id="Client-a-k-a-Initiator-–-GUI-Method"><a href="#Client-a-k-a-Initiator-–-GUI-Method" class="headerlink" title="Client a.k.a. Initiator – GUI Method"></a>Client a.k.a. Initiator – GUI Method</h2><p>The method applies to Debian 11 with GNOME desktop.</p>
+<p>Open a terminal, and install the strongSwan plugin for Network Manager:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install network-manager-strongswan</span><br></pre></td></tr></table></figure>
+
+<p>Copy down certificates from server to client, replacing <code>moon.example.com</code> by your actual server hostname:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scp root@moon.example.com:/etc/swanctl/x509ca/caCert.der caCert.der</span><br><span class="line"></span><br><span class="line">scp root@moon.example.com:/etc/swanctl/x509/carolCert.der carolCert.der</span><br><span class="line"></span><br><span class="line">scp root@moon.example.com:/etc/swanctl/private/carolKey.der carolKey.der</span><br></pre></td></tr></table></figure>
+
+<p>Go to GNOME <strong>Settings</strong>, and select the <strong>Network</strong> page. Click the plus sign to add a VPN configuration. Select <strong>IPsec/IKEv2 (strongswan)</strong>. Fill in the details:</p>
+<ul>
+<li>Name can be anything you will remember</li>
+<li>Address is the server hostname</li>
+<li>Certificate is the CA certificate file name</li>
+<li>Authentication is <strong>Certificate</strong></li>
+<li>Certificate file is the client’s certificate</li>
+<li>Private key is the client’s private key</li>
+<li>Check <strong>Request an inner IP address</strong></li>
+<li>Check <strong>Enforce UDP encapsulation</strong></li>
+</ul>
+<p><img src="/images/network-manager-strongswan.png" alt="Network Manager strongSwan GUI"></p>
+<p>Click <strong>Add</strong>.</p>
+<p>Toggle the connection switch on to make the connection.</p>
+<p>Check IP address of client by opening Firefox browser and visiting <a target="_blank" rel="noopener" href="https://whatismyipaddress.com/">https://whatismyipaddress.com</a>.</p>
+<h2 id="Client-a-k-a-Initiator-–-Legacy-Method"><a href="#Client-a-k-a-Initiator-–-Legacy-Method" class="headerlink" title="Client a.k.a. Initiator – Legacy Method"></a>Client a.k.a. Initiator – Legacy Method</h2><p>This method applies to a “headless” Debian client machine. Install strongSwan:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install strongswan libcharon-extra-plugins</span><br></pre></td></tr></table></figure>
+
+<p>Copy down certificates from server to client, replacing <code>moon.example.com</code> by your actual server hostname:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">scp root@moon.example.com:/etc/swanctl/x509ca/caCert.der caCert.der</span><br><span class="line"></span><br><span class="line">scp root@moon.example.com:/etc/swanctl/x509/carolCert.der carolCert.der</span><br><span class="line"></span><br><span class="line">scp root@moon.example.com:/etc/swanctl/private/carolKey.der carolKey.der</span><br><span class="line"></span><br><span class="line">sudo cp caCert.der /etc/ipsec.d/cacerts/</span><br><span class="line"></span><br><span class="line">sudo cp carolCert.der /etc/ipsec.d/certs/</span><br><span class="line"></span><br><span class="line">sudo cp carolKey.der /etc/ipsec.d/private/</span><br></pre></td></tr></table></figure>
+
+<p>Edit IPsec configuration file, <code>/etc/ipsec.conf</code>. Make the contents look like this, replacing <code>moon.example.com</code> by your actual server hostname, and replacing <code>carol@example.com</code> by your actual client identifier:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">conn ikev2-pubkey</span><br><span class="line">    auto=start</span><br><span class="line">    leftsourceip=%config</span><br><span class="line">    leftid=carol@example.com</span><br><span class="line">    leftcert=carolCert.der</span><br><span class="line">    leftauth=pubkey</span><br><span class="line">    right=moon.example.com</span><br><span class="line">    rightid=moon.example.com</span><br><span class="line">    rightsubnet=0.0.0.0/0</span><br><span class="line">    rightauth=pubkey</span><br></pre></td></tr></table></figure>
+
+<p>Edit the IPsec secrets file, <code>/etc/ipsec.secrets</code>. Make the contents look like this:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">: RSA carolKey.der</span><br></pre></td></tr></table></figure>
+
+<p>Restart strongSwan with your revised IPsec configuration:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart strongswan-starter</span><br></pre></td></tr></table></figure>
+
+<p>Install <code>curl</code>, which we will use in a moment to check the IP address of client:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl</span><br></pre></td></tr></table></figure>
+
+<p>If the above gives problems with DNS resolution, then take remedial action like this:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop strongswan-starter</span><br><span class="line"></span><br><span class="line">sudo apt install resolvconf</span><br><span class="line"></span><br><span class="line">sudo reboot</span><br><span class="line"></span><br><span class="line">sudo apt install curl</span><br><span class="line"></span><br><span class="line">sudo systemctl restart strongswan-starter</span><br></pre></td></tr></table></figure>
+
+<p>Check the IP address of the client:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://checkip.amazonaws.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="Client-a-k-a-Initiator-–-VICI-Method"><a href="#Client-a-k-a-Initiator-–-VICI-Method" class="headerlink" title="Client a.k.a. Initiator – VICI Method"></a>Client a.k.a. Initiator – VICI Method</h2><p>Install strongSwan:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt upgrade</span><br><span class="line"></span><br><span class="line">sudo apt install strongswan libstrongswan libstrongswan-extra-plugins libstrongswan-standard-plugins network-manager-strongswan strongswan-charon strongswan-libcharon strongswan-nm strongswan-pki strongswan-starter strongswan-swanctl libcharon-extra-plugins charon-systemd</span><br></pre></td></tr></table></figure>
+
+<p>Copy down certificates from server to client, replacing <code>moon.example.com</code> by your actual server hostname:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">scp root@moon.example.com:/etc/swanctl/x509ca/caCert.der caCert.der</span><br><span class="line"></span><br><span class="line">scp root@moon.example.com:/etc/swanctl/x509/carolCert.der carolCert.der</span><br><span class="line"></span><br><span class="line">scp root@moon.example.com:/etc/swanctl/private/carolKey.der carolKey.der</span><br><span class="line"></span><br><span class="line">sudo cp caCert.der /etc/swanctl/x509ca/caCert.der</span><br><span class="line"></span><br><span class="line">sudo cp carolCert.der /etc/swanctl/x509/carolCert.der</span><br><span class="line"></span><br><span class="line">sudo cp carolKey.der /etc/swanctl/private/carolKey.der</span><br></pre></td></tr></table></figure>
+
+<p>Edit the VICI configuration file, <code>/etc/swanctl/swanctl.conf</code>, to look as below, replacing <code>moon.example.com</code> by your actual server IP address, and replacing <code>carol@example.com</code> by your actual client identifier:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">connections &#123;</span><br><span class="line"></span><br><span class="line">   home &#123;</span><br><span class="line">      version = 2</span><br><span class="line">      remote_addrs = moon.example.com</span><br><span class="line">      vips = 0.0.0.0</span><br><span class="line">      local &#123;</span><br><span class="line">         certs = /etc/swanctl/x509/carolCert.der</span><br><span class="line">         id = carol@example.com</span><br><span class="line">      &#125;</span><br><span class="line">      remote &#123;</span><br><span class="line">         id = moon.example.com </span><br><span class="line">      &#125;</span><br><span class="line">      children &#123;</span><br><span class="line">         home &#123;</span><br><span class="line">            remote_ts = 0.0.0.0/0</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">secrets &#123;</span><br><span class="line">   private-key &#123;</span><br><span class="line">      file = carolKey.der</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Restart strongSwan:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart strongswan-swanctl</span><br></pre></td></tr></table></figure>
+
+<p>Initiate connection:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swanctl --initiate --child home</span><br></pre></td></tr></table></figure>
+
+<p>Check IP address:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl</span><br><span class="line"></span><br><span class="line">curl https://checkip.amazonaws.com</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/19/Split-Tunneling-in-OpenVPN-Client-on-Windows/" rel="prev" title="Split Tunneling in OpenVPN Client on Windows">
+                  <i class="fa fa-chevron-left"></i> Split Tunneling in OpenVPN Client on Windows
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seakfind</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
