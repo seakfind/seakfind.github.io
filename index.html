@@ -181,7 +181,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-10-21 14:00:00 / Modified: 14:35:03" itemprop="dateCreated datePublished" datetime="2021-10-21T14:00:00-07:00">2021-10-21</time>
+      <time title="Created: 2021-10-21 14:00:00 / Modified: 16:13:43" itemprop="dateCreated datePublished" datetime="2021-10-21T14:00:00-07:00">2021-10-21</time>
     </span>
 
   
@@ -195,6 +195,12 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>The scenario in this post is that we have a server and client, both running Debian 11. The server is named <code>moon</code> and the client is named <code>carol</code>. The virtual addresses for the VPN will come from the range <code>172.16.252.0/24</code>.</p>
+<p>For the client, we describe three alternative methods:</p>
+<ul>
+<li>GNOME desktop Network Manager GUI</li>
+<li>Headless server “stroke” legacy format</li>
+<li>Headless server modern VICI format</li>
+</ul>
 <h2 id="Server-a-k-a-Responder"><a href="#Server-a-k-a-Responder" class="headerlink" title="Server a.k.a. Responder"></a>Server a.k.a. Responder</h2><p>Various firewalls are available for Debian 11. Whichever one you implement, you must add these firewall rules for IPsec:</p>
 <ul>
 <li>Open input port 500/udp</li>
